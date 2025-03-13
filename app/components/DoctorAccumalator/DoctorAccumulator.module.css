@@ -1,0 +1,41 @@
+.container {
+    text-align: center;
+    line-height: 1.5;
+}
+
+.title {
+    font-weight: 500;
+}
+
+.para {
+    font-size: small;
+}
+
+.subContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.left {
+    flex: 1;
+}
+
+.right {
+    flex: 3;
+}
+
+
+.cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    flex-direction: row;
+}
+
+@media (min-width: 768px) {
+    .subContainer {
+        flex-direction: row;
+    }
+}
