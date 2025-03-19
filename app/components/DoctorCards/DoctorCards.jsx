@@ -1,9 +1,16 @@
+"use client"
+
+import { useRouter } from "next/navigation";
 import styles from "./DoctorCards.module.css";
 import { Stethoscope, Clock,Star as StarFilled, Star as StarEmpty } from "lucide-react";
 
 const DoctorCards = ({ doctor }) => {
+    const router = useRouter();
     const fullStars = Math.floor(doctor.ratings || 0);
     const emptyStars = 5 - fullStars;
+    const handleBooking = ()=>{
+        router.push(`/appointments/${doctor.id}`);
+    }
     return (
         <div className={styles.card}>
             <img src={doctor.image} alt={doctor.name} className={styles.profileImage} />
@@ -25,7 +32,7 @@ const DoctorCards = ({ doctor }) => {
                     <StarEmpty key={`empty-${index}`} className={styles.star} fill="none" />
                 ))}
             </div>
-            <button className={styles.bookButton} onClick={()=>(console.log(doctor.id))}>Book Appointment</button>
+            <button className={styles.bookButton} onClick={handleBooking}>Book Appointment</button>
         </div>
     );
 };
