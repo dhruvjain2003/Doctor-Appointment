@@ -47,7 +47,7 @@ const doctors = [
     {
         id: 6,
         name: "Dr. Arjun Nair",
-        specialty: "Orthopedic Surgeon",
+        specialty: "Orthopedic",
         experience: "9 Years",
         image: "https://randomuser.me/api/portraits/men/35.jpg",
         ratings: 1,
@@ -55,7 +55,7 @@ const doctors = [
     {
         id: 7,
         name: "Dr. Arjun Nair",
-        specialty: "Orthopedic Surgeon",
+        specialty: "Orthopedic",
         experience: "9 Years",
         image: "https://randomuser.me/api/portraits/men/35.jpg",
         ratings: 1,

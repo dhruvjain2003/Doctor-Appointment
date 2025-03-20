@@ -1,9 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
 
-:global(*) {
-    font-family: 'Montserrat', sans-serif;
-}
-
 .container {
     display: flex;
     justify-content: center;
@@ -13,6 +9,7 @@
     background-image: url('/images/login-bg.png');
     background-size: cover;
     background-position: center;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .loginBox {
