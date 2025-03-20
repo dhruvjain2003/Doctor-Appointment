@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import DoctorCard from "../DoctorCards/DoctorCards";
 import Filter from "../LeftSideBar/LeftSideBar";
 import styles from "./DoctorAccumulator.module.css";
@@ -51,9 +52,27 @@ const doctors = [
         image: "https://randomuser.me/api/portraits/men/35.jpg",
         ratings: 1,
     },
+    {
+        id: 7,
+        name: "Dr. Arjun Nair",
+        specialty: "Orthopedic Surgeon",
+        experience: "9 Years",
+        image: "https://randomuser.me/api/portraits/men/35.jpg",
+        ratings: 1,
+    },
 ];
 
 const DoctorList = () => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const doctorsPerPage = 6;
+
+    // Calculate the current doctors to display
+    const indexOfLastDoctor = currentPage * doctorsPerPage;
+    const indexOfFirstDoctor = indexOfLastDoctor - doctorsPerPage;
+    const currentDoctors = doctors.slice(indexOfFirstDoctor, indexOfLastDoctor);
+
+    // Change page
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <div className={styles.container}>
@@ -66,15 +85,76 @@ const DoctorList = () => {
                 </div>
                 <div className={styles.right}>
                     <div className={styles.cardContainer}>
-                        {doctors.map((doctor)=>(
+                        {currentDoctors.map((doctor) => (
                             <DoctorCard key={doctor.id} doctor={doctor} />
                         ))}
                     </div>
+                    <Pagination
+                        doctorsPerPage={doctorsPerPage}
+                        totalDoctors={doctors.length}
+                        paginate={paginate}
+                        currentPage={currentPage}
+                    />
                 </div>
             </div>
         </div>
     );
+};
 
+
+const Pagination = ({ doctorsPerPage, totalDoctors, paginate, currentPage }) => {
+    const pageNumbers = [];
+    const totalPages = Math.ceil(totalDoctors / doctorsPerPage);
+
+    if (totalPages <= 7) {
+        for (let i = 1; i <= totalPages; i++) {
+            pageNumbers.push(i);
+        }
+    } else {
+        pageNumbers.push(1);
+        if (currentPage > 3) pageNumbers.push("...");
+        for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+            pageNumbers.push(i);
+        }
+        if (currentPage < totalPages - 2) pageNumbers.push("...");
+        pageNumbers.push(totalPages);
+    }
+
+    return (
+        <nav>
+            <ul className={styles.pagination}>
+                <li className={styles.pageItem}>
+                    <button
+                        onClick={() => paginate(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className={currentPage === 1 ? styles.disabled : ""}
+                    >
+                        &lt; Prev
+                    </button>
+                </li>
+
+                {pageNumbers.map((number, index) =>
+                    number === "..." ? (
+                        <span key={index} className={styles.ellipsis}>...</span>
+                    ) : (
+                        <li key={number} className={`${styles.pageItem} ${currentPage === number ? styles.active : ""}`}>
+                            <button onClick={() => paginate(number)}>{number}</button>
+                        </li>
+                    )
+                )}
+
+                <li className={styles.pageItem}>
+                    <button
+                        onClick={() => paginate(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className={currentPage === totalPages ? styles.disabled : ""}
+                    >
+                        Next &gt;
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    );
 };
 
 export default DoctorList;
