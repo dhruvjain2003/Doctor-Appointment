@@ -15,7 +15,7 @@ export default function Home() {
       </div>
       <div className={styles.heroImageContainer}>
         <Image
-          src="/images/nurse.jfif"
+          src="/images/nurse.png"
           alt="Doctor and Patient"
           width={800}
           height={900}
