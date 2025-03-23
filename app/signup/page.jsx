@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { User, AtSign, Lock, Eye, EyeOff } from "lucide-react";
 import styles from "./signup.module.css";
+import { useRouter } from "next/navigation";
 
 function Signup() {
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
     password: "",
   });
@@ -17,9 +18,30 @@ function Signup() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const router = useRouter();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted with:", formData);
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Signup successful:", data);
+        alert("Successfully signed up! Now login.");
+        router.push("/login");
+      } else {
+        const error = await response.json();
+        console.error("Signup failed:", error);
+      }
+    } catch (err) {
+      console.error("An error occurred:", err);
+    }
   };
 
   return (
@@ -38,9 +60,9 @@ function Signup() {
               <User className={styles.inputIcon} size={20} color="#555" />
               <input
                 type="text"
-                name="fullName"
+                name="name"
                 placeholder="Enter your full name"
-                value={formData.fullName}
+                value={formData.name}
                 onChange={handleChange}
                 className={styles.inputField}
                 required
@@ -89,7 +111,7 @@ function Signup() {
           <button
             type="reset"
             className={styles.resetBtn}
-            onClick={() => setFormData({ fullName: "", email: "", password: "" })}
+            onClick={() => setFormData({ name: "", email: "", password: "" })}
           >
             Reset
           </button>

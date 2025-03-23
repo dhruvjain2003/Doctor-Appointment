@@ -5,10 +5,16 @@
 
 .title {
     font-weight: 500;
+    margin-top: 3rem;
+    font-size: 60px;
+    letter-spacing: -0.5px;
+    line-height: 180%;
+    color:#0E2515;
 }
 
 .para {
-    font-size: small;
+    font-size: 18px;
+    color:#8C8C8C;
 }
 
 .subContainer {

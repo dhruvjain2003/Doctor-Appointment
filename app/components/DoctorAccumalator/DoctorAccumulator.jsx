@@ -1,87 +1,104 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import DoctorCard from "../DoctorCards/DoctorCards";
 import Filter from "../LeftSideBar/LeftSideBar";
+import SearchContainer from "../SearchContainer/SearchContainer";
 import styles from "./DoctorAccumulator.module.css";
 
-const doctors = [
-    {
-        id: 1,
-        name: "Dr. Ayesha Kapoor",
-        specialty: "Cardiologist",
-        experience: "12 Years",
-        image: "https://randomuser.me/api/portraits/women/50.jpg",
-        ratings: 4,
-    },
-    {
-        id: 2,
-        name: "Dr. Rohan Verma",
-        specialty: "Dermatologist",
-        experience: "8 Years",
-        image: "https://randomuser.me/api/portraits/men/45.jpg",
-        ratings: 3,
-    },
-    {
-        id: 3,
-        name: "Dr. Neha Sharma",
-        specialty: "Pediatrician",
-        experience: "10 Years",
-        image: "https://randomuser.me/api/portraits/women/60.jpg",
-        ratings: 4,
-    },
-    {
-        id: 4,
-        name: "Dr. Vikram Patel",
-        specialty: "Neurologist",
-        experience: "15 Years",
-        image: "https://randomuser.me/api/portraits/men/55.jpg",
-        ratings: 3,
-    },
-    {
-        id: 5,
-        name: "Dr. Simran Kaur",
-        specialty: "Gynecologist",
-        experience: "7 Years",
-        image: "https://randomuser.me/api/portraits/women/30.jpg",
-        ratings: 2,
-    },
-    {
-        id: 6,
-        name: "Dr. Arjun Nair",
-        specialty: "Orthopedic",
-        experience: "9 Years",
-        image: "https://randomuser.me/api/portraits/men/35.jpg",
-        ratings: 1,
-    },
-    {
-        id: 7,
-        name: "Dr. Arjun Nair",
-        specialty: "Orthopedic",
-        experience: "9 Years",
-        image: "https://randomuser.me/api/portraits/men/35.jpg",
-        ratings: 1,
-    },
-];
+// const doctors = [
+//     {
+//         id: 1,
+//         name: "Dr. Ayesha Kapoor",
+//         specialty: "Cardiologist",
+//         experience: "12 Years",
+//         image: "https://randomuser.me/api/portraits/women/50.jpg",
+//         ratings: 4,
+//     },
+//     {
+//         id: 2,
+//         name: "Dr. Rohan Verma",
+//         specialty: "Dermatologist",
+//         experience: "8 Years",
+//         image: "https://randomuser.me/api/portraits/men/45.jpg",
+//         ratings: 3,
+//     },
+//     {
+//         id: 3,
+//         name: "Dr. Neha Sharma",
+//         specialty: "Pediatrician",
+//         experience: "10 Years",
+//         image: "https://randomuser.me/api/portraits/women/60.jpg",
+//         ratings: 4,
+//     },
+//     {
+//         id: 4,
+//         name: "Dr. Vikram Patel",
+//         specialty: "Neurologist",
+//         experience: "15 Years",
+//         image: "https://randomuser.me/api/portraits/men/55.jpg",
+//         ratings: 3,
+//     },
+//     {
+//         id: 5,
+//         name: "Dr. Simran Kaur",
+//         specialty: "Gynecologist",
+//         experience: "7 Years",
+//         image: "https://randomuser.me/api/portraits/women/30.jpg",
+//         ratings: 2,
+//     },
+//     {
+//         id: 6,
+//         name: "Dr. Arjun Nair",
+//         specialty: "Orthopedic",
+//         experience: "9 Years",
+//         image: "https://randomuser.me/api/portraits/men/35.jpg",
+//         ratings: 1,
+//     },
+//     {
+//         id: 7,
+//         name: "Dr. Arjun Nair",
+//         specialty: "Orthopedic",
+//         experience: "9 Years",
+//         image: "https://randomuser.me/api/portraits/men/35.jpg",
+//         ratings: 1,
+//     },
+// ];
 
 const DoctorList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const doctorsPerPage = 6;
 
-    // Calculate the current doctors to display
+    const [doctors,setDoctors] = useState([]);
+
+    useEffect(() => {
+        const fetchDoctors = async () => {
+            try {
+                const response = await fetch("http://localhost:5000/api/doctors");
+                const data = await response.json();
+                // console.log(data);
+                setDoctors(data);
+            } catch (error) {
+                console.error("Error fetching doctors:", error);
+            }
+        };
+
+        fetchDoctors();
+    }, []);
+
     const indexOfLastDoctor = currentPage * doctorsPerPage;
     const indexOfFirstDoctor = indexOfLastDoctor - doctorsPerPage;
     const currentDoctors = doctors.slice(indexOfFirstDoctor, indexOfLastDoctor);
 
-    // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>6 doctors available</h1>
+            <SearchContainer setDoctors={setDoctors} />
+            <h1 className={styles.title}>{doctors.length} doctors available</h1>
             <p className={styles.para}>Book appointments with minimum wait-time & verified doctor details</p>
             <br />
             <div className={styles.subContainer}>
                 <div className={styles.left}>
-                    <Filter />
+                    <Filter setDoctors={setDoctors}/>
                 </div>
                 <div className={styles.right}>
                     <div className={styles.cardContainer}>

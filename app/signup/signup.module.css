@@ -88,6 +88,10 @@
     background: transparent;
 }
 
+.inputField::placeholder{
+    font-family: 'Montserrat', sans-serif;
+}
+
 .inputIcon {
     position: absolute;
     left: 10px;

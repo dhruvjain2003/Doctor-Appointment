@@ -23,6 +23,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
+    cursor: pointer;
 }
 
 .logo span {
@@ -60,7 +61,7 @@
     gap: 12px;
 }
 
-.login,.register {
+.login,.register,.logout {
     padding: 12px 24px;
     border: none;
     font-size: 14px;
@@ -90,6 +91,18 @@
 
 .register:hover {
     opacity: 0.8;
+}
+
+.logout {
+    background: #1C4A2A;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.logout:hover {
+    background: #065f46;
+    opacity: 0.9;
 }
 
 .mobileMenuIcon {     
@@ -147,6 +160,11 @@
 
 .mobileButtons .login,
 .mobileButtons .register {
+    width: 200px;
+    text-align: center;
+}
+
+.mobileButtons .logout {
     width: 200px;
     text-align: center;
 }

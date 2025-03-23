@@ -4,22 +4,46 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { AtSign, Lock, Eye, EyeOff } from "lucide-react";
 import styles from "./login.module.css";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/context/AuthContext"; 
 
 function Login() {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false); 
+  const { login } = useAuth();
+  const router = useRouter();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted with:", formData);
+    setLoading(true);
+    
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        login(data.token); 
+        alert("Login successful");
+        router.push(`/?message=success`);
+      } else {
+        alert(data.message || "Invalid credentials");
+      }
+    } catch (error) {
+      console.error("Login Error:", error);
+      alert("Something went wrong. Try again later.");
+    } finally {
+      setLoading(false); 
+    }
   };
 
   return (
@@ -69,18 +93,22 @@ function Login() {
             </div>
           </div>
 
-          <button type="submit" className={styles.loginBtn}>Login</button>
+          <button type="submit" className={styles.loginBtn} disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
+          </button>
+
           <button
             type="reset"
             className={styles.resetBtn}
             onClick={() => setFormData({ email: "", password: "" })}
+            disabled={loading}
           >
             Reset
           </button>
         </form>
 
         <p className={styles.forgotPassword}>
-          <Link href="/">Forgot Password?</Link>
+          <Link href="/forgot-password">Forgot Password?</Link>
         </p>
       </div>
     </div>
