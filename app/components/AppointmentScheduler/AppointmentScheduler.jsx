@@ -15,9 +15,10 @@ const AppointmentScheduler = () => {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
-
+        const today = new Date();
+        const startDay = today.getMonth() === month && today.getFullYear() === year ? today.getDate() : 1;
         const dates = [];
-        for (let day = 1; day <= daysInMonth; day++) {
+        for (let day = startDay; day <= daysInMonth; day++) {
             const dateObj = new Date(year, month, day);
             dates.push({
                 day: dateObj.toLocaleString("default", { weekday: "short" }),
