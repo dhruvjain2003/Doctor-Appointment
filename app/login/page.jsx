@@ -34,7 +34,11 @@ function Login() {
       if (response.ok) {
         login(data.token); 
         alert("Login successful");
-        router.push(`/?message=success`);
+        if (data.user.role === "admin") {
+          router.push("/admin"); 
+        } else {
+          router.push(`/?message=success`);
+        }
       } else {
         alert(data.message || "Invalid credentials");
       }
