@@ -158,7 +158,7 @@ const Pagination = ({ doctorsPerPage, totalDoctors, paginate, currentPage }) => 
 
                 {pageNumbers.map((number, index) =>
                     number === "..." ? (
-                        <span key={index} className={styles.ellipsis}>...</span>
+                        <span key={`ellipsis-${index}`} className={styles.ellipsis}>...</span>
                     ) : (
                         <li key={number} className={`${styles.pageItem} ${currentPage === number ? styles.active : ""}`}>
                             <button onClick={() => paginate(number)}>{number}</button>

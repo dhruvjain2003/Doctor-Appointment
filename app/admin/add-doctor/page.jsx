@@ -1,23 +1,21 @@
 "use client";
 import styles from "./add-doctor.module.css";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 
 export default function AddDoctor() {
-
     const { user } = useAuth();
-        const router = useRouter();
-    
-        useEffect(() => {
-            if (!user || user.role !== "admin") {
-                alert("You are not an admin. Redirecting..."); 
-    
-                setTimeout(() => {
-                    router.replace("/"); 
-                }, 1000);
-            }
-        }, [user, router]);
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!user || user.role !== "admin") {
+            alert("You are not an admin. Redirecting...");
+            setTimeout(() => {
+                router.replace("/");
+            }, 1000);
+        }
+    }, [user, router]);
 
     const [doctorData, setDoctorData] = useState({
         name: "",
@@ -29,6 +27,8 @@ export default function AddDoctor() {
     });
 
     const [errors, setErrors] = useState({});
+    const [isLoading, setIsLoading] = useState(false); // Loader state
+    const [successMessage, setSuccessMessage] = useState(""); // Success message state
 
     const validateForm = () => {
         let newErrors = {};
@@ -82,6 +82,9 @@ export default function AddDoctor() {
         e.preventDefault();
         if (!validateForm()) return;
 
+        setIsLoading(true); // Show loader
+        setSuccessMessage(""); // Clear previous success message
+
         const formData = new FormData();
         formData.append("name", doctorData.name);
         formData.append("specialty", doctorData.specialty);
@@ -89,7 +92,7 @@ export default function AddDoctor() {
         formData.append("rating", doctorData.rating);
         formData.append("gender", doctorData.gender);
         formData.append("profile_image", doctorData.profile_image);
-        console.log(formData);
+
         try {
             const response = await fetch("http://localhost:5000/api/admin/add-doctor", {
                 method: "POST",
@@ -97,7 +100,7 @@ export default function AddDoctor() {
             });
 
             if (response.ok) {
-                alert("Doctor added successfully!");
+                setSuccessMessage("Doctor added successfully!");
                 setDoctorData({
                     name: "",
                     specialty: "",
@@ -108,81 +111,89 @@ export default function AddDoctor() {
                 });
                 setErrors({});
             } else {
-                alert("Error adding doctor.");
+                setSuccessMessage("Error adding doctor. Please try again.");
             }
         } catch (error) {
             console.error(error);
-            alert("Something went wrong.");
+            setSuccessMessage("Something went wrong. Please try again.");
+        } finally {
+            setIsLoading(false); // Hide loader
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className={styles.form} encType="multipart/form-data">
-            <input
-                type="text"
-                name="name"
-                placeholder="Doctor's Name"
-                value={doctorData.name}
-                onChange={handleChange}
-                required
-                className={styles.input}
-            />
-            {errors.name && <span className={styles.error}>{errors.name}</span>}
+        <div>
+            {isLoading && <div className={styles.loader}></div>} {/* Loader */}
+            {successMessage && <div className={styles.alert}>{successMessage}</div>} {/* Success/Failure Message */}
+            <form onSubmit={handleSubmit} className={styles.form} encType="multipart/form-data">
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Doctor's Name"
+                    value={doctorData.name}
+                    onChange={handleChange}
+                    required
+                    className={styles.input}
+                />
+                {errors.name && <span className={styles.error}>{errors.name}</span>}
 
-            <input
-                type="text"
-                name="specialty"
-                placeholder="Specialty"
-                value={doctorData.specialty}
-                onChange={handleChange}
-                required
-                className={styles.input}
-            />
-            {errors.specialty && <span className={styles.error}>{errors.specialty}</span>}
+                <input
+                    type="text"
+                    name="specialty"
+                    placeholder="Specialty"
+                    value={doctorData.specialty}
+                    onChange={handleChange}
+                    required
+                    className={styles.input}
+                />
+                {errors.specialty && <span className={styles.error}>{errors.specialty}</span>}
 
-            <input
-                type="number"
-                name="experience"
-                placeholder="Experience (years)"
-                value={doctorData.experience}
-                onChange={handleChange}
-                required
-                className={styles.input}
-            />
-            {errors.experience && <span className={styles.error}>{errors.experience}</span>}
+                <input
+                    type="number"
+                    name="experience"
+                    placeholder="Experience (years)"
+                    value={doctorData.experience}
+                    onChange={handleChange}
+                    required
+                    className={styles.input}
+                />
+                {errors.experience && <span className={styles.error}>{errors.experience}</span>}
 
-            <input
-                type="number"
-                name="rating"
-                placeholder="Rating (1-5)"
-                value={doctorData.rating}
-                onChange={handleChange}
-                step="0.1"
-                min="1"
-                max="5"
-                required
-                className={styles.input}
-            />
-            {errors.rating && <span className={styles.error}>{errors.rating}</span>}
+                <input
+                    type="number"
+                    name="rating"
+                    placeholder="Rating (1-5)"
+                    value={doctorData.rating}
+                    onChange={handleChange}
+                    step="0.1"
+                    min="1"
+                    max="5"
+                    required
+                    className={styles.input}
+                />
+                {errors.rating && <span className={styles.error}>{errors.rating}</span>}
 
-            <select name="gender" value={doctorData.gender} onChange={handleChange} required className={styles.select}>
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-            </select>
-            {errors.gender && <span className={styles.error}>{errors.gender}</span>}
+                <select name="gender" value={doctorData.gender} onChange={handleChange} required className={styles.select}>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+                {errors.gender && <span className={styles.error}>{errors.gender}</span>}
 
-            <input
-                type="file"
-                name="profile_image"
-                accept="image/*"
-                onChange={handleFileChange}
-                required
-                className={styles.file}
-            />
-            {errors.profile_image && <span className={styles.error}>{errors.profile_image}</span>}
+                <input
+                    type="file"
+                    name="profile_image"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    required
+                    className={styles.file}
+                />
+                {errors.profile_image && <span className={styles.error}>{errors.profile_image}</span>}
 
-            <button type="submit" className={styles.button}>Add Doctor</button>
-        </form>
+                <button type="submit" className={styles.button} disabled={isLoading}>
+                    {isLoading ? "Adding Doctor..." : "Add Doctor"}
+                </button>
+            </form>
+        </div>
     );
 }
