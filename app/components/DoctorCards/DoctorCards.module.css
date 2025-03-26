@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
 .card {
-    width: 250px;
+    width: 275px;
     line-height: 1.5;
     border-radius: 12px;
     padding: 16px;
@@ -79,6 +79,12 @@
     background-color: #2e7d32;
     color: white;
 }   
+
+@media (max-width:1180px) {
+    .card{
+        width: 45%;
+    }
+}
 
 @media (max-width:768px) {
     .card{

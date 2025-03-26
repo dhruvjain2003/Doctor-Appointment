@@ -1,19 +1,21 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { FiMenu, FiX } from "react-icons/fi"; 
+import { FiMenu, FiX } from "react-icons/fi";
+import { FaUserCircle } from "react-icons/fa"; // User icon
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/app/context/AuthContext"; 
+import { useAuth } from "@/app/context/AuthContext";
 import styles from "./Header.module.css";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { isLoggedIn, logout } = useAuth(); 
+  const [dropdownOpen, setDropdownOpen] = useState(false); // State for dropdown
+  const { isLoggedIn, logout } = useAuth();
   const router = useRouter();
 
   const handleLogout = () => {
-    logout(); 
+    logout();
     router.push("/login");
   };
 
@@ -37,7 +39,20 @@ const Header = () => {
         </div>
         <div className={styles.buttons}>
           {isLoggedIn ? (
-            <button className={styles.logout} onClick={handleLogout}>Logout</button>
+            <>
+              <div
+                className={styles.userIcon}
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+              >
+                <FaUserCircle size={28} />
+                {dropdownOpen && (
+                  <div className={styles.dropdownMenu}>
+                    <Link href="/dashboard" onClick={() => setDropdownOpen(false)}>Dashboard</Link>
+                  </div>
+                )}
+              </div>
+              <button className={styles.logout} onClick={handleLogout}>Logout</button>
+            </>
           ) : (
             <>
               <button className={styles.login} onClick={() => router.push("/login")}>Login</button>
