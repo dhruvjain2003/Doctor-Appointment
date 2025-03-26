@@ -6,6 +6,8 @@ import { AtSign, Lock, Eye, EyeOff } from "lucide-react";
 import styles from "./login.module.css";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext"; 
+// import { toast } from "react-hot-toast";
+// import { Toaster } from "react-hot-toast";
 
 function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -33,6 +35,7 @@ function Login() {
 
       if (response.ok) {
         login(data.token); 
+        // toast.success("Login successful! 🎉", { duration: 3000 });
         alert("Login successful");
         if (data.user.role === "admin") {
           router.push("/admin"); 
@@ -52,6 +55,7 @@ function Login() {
 
   return (
     <div className={styles.container}>
+      {/* <Toaster position="top-right" reverseOrder={false} /> */}
       <div className={styles.loginBox}>
         <h2 className={styles.heading}>Login</h2>
         <p className={styles.text}>

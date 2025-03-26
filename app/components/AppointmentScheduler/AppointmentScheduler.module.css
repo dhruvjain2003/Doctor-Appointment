@@ -220,3 +220,10 @@
     padding: 20px 16px;
 
 }
+
+@media (max-width: 468px) {
+    .bookButton{
+        margin-top: 1rem;
+    }
+  }
+  

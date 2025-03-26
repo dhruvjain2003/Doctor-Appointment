@@ -1,33 +1,133 @@
 "use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import styles from "./AppointmentScheduler.module.css";
 import { ChevronDown, CircleChevronLeft, CircleChevronRight, Sun, Sunset } from "lucide-react";
 import DatesToSelect from "../DatesToSelect/DatesToSelect";
+import { useRouter } from "next/navigation";
 
-const AppointmentScheduler = () => {
+const AppointmentScheduler = ({doctorId}) => {
+    const router = useRouter();
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [selectedOption, setSelectedOption] = useState("MedicareHeart Institute, Okhla Road");
     const [date, setDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [slots, setSlots] = useState({ morning: [], evening: [] });
+    const [isLoading, setIsLoading] = useState(false);
+    const [appointmentType, setAppointmentType] = useState('online');
+    const [selectedTime, setSelectedTime] = useState(null);
 
+    useEffect(() => {
+        const fetchSlots = async () => {
+            if (!doctorId) return;
+            setIsLoading(true);
+            try {
+                console.log('Selected Date:', selectedDate); 
+                const dateToFormat = new Date(selectedDate);
+                console.log('Date to format:', dateToFormat); 
+                
+                try {
+                    const formattedDate = format(dateToFormat, 'yyyy-MM-dd');
+                    console.log('Formatted date:', formattedDate);
+                } catch (formatError) {
+                    console.error('Error formatting date:', formatError);
+                    console.log('Date value causing error:', dateToFormat);
+                    return;
+                }
+    
+                const formattedDate = format(dateToFormat, 'yyyy-MM-dd');
+                const response = await fetch(`http://localhost:5000/api/slots/${doctorId}?date=${formattedDate}`);
+                const { data } = await response.json();
+                console.log('Received data from API:', data); 
+    
+                const formatTimeToAMPM = (timeStr) => {
+                    console.log('Formatting time:', timeStr); 
+                    const [hours, minutes] = timeStr.split(':');
+                    const hour = parseInt(hours);
+                    const ampm = hour >= 12 ? 'PM' : 'AM';
+                    const hour12 = hour % 12 || 12;
+                    return `${hour12}:${minutes} ${ampm}`;
+                };
+    
+                const morningSlots = data
+                    .filter(slot => {
+                        console.log('Filtering slot:', slot); 
+                        return slot.slot_type === 'morning';
+                    })
+                    .map(slot => {
+                        console.log('Processing morning slot:', slot); 
+                        return {
+                            time: formatTimeToAMPM(slot.slot_time),
+                            available: slot.available,
+                            id: slot.id
+                        };
+                    });
+                
+                const eveningSlots = data
+                    .filter(slot => slot.slot_type === 'evening')
+                    .map(slot => {
+                        console.log('Processing evening slot:', slot); 
+                        return {
+                            time: formatTimeToAMPM(slot.slot_time),
+                            available: slot.available,
+                            id: slot.id
+                        };
+                    });
+    
+                console.log('Processed slots:', { morning: morningSlots, evening: eveningSlots }); 
+    
+                setSlots({
+                    morning: morningSlots,
+                    evening: eveningSlots
+                });
+            } catch (error) {
+                console.error('Error in fetchSlots:', error);
+                console.error('Error stack:', error.stack);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+    
+        fetchSlots();
+    }, [doctorId, selectedDate]);
+    
+
+    console.log('Current date state:', date);
+    console.log('Current selectedDate state:', selectedDate);
+    
     const generateDatesForMonth = (currentDate) => {
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const today = new Date();
-        const startDay = today.getMonth() === month && today.getFullYear() === year ? today.getDate() : 1;
-        const dates = [];
-        for (let day = startDay; day <= daysInMonth; day++) {
-            const dateObj = new Date(year, month, day);
-            dates.push({
-                day: format(dateObj, "EEE"), 
-                date: format(dateObj, "MMM dd"), 
-            });
+        console.log('Generating dates for:', currentDate);
+        try {
+            
+            const dateObj = new Date(currentDate);
+            
+            const year = dateObj.getFullYear();
+            const month = dateObj.getMonth();
+            console.log('Year and Month:', { year, month });
+    
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+            const startDay = today.getMonth() === month && today.getFullYear() === year 
+                ? today.getDate() 
+                : 1;
+    
+            const dates = [];
+            for (let day = startDay; day <= daysInMonth; day++) {
+                const dateObj = new Date(year, month, day);
+                dates.push({
+                    day: format(dateObj, "EEE"),
+                    date: format(dateObj, "MMM dd"),
+                });
+            }
+            console.log('Generated dates:', dates);
+            return dates;
+        } catch (error) {
+            console.error('Error in generateDatesForMonth:', error);
+            console.error('Input currentDate:', currentDate);
+            return [];
         }
-        return dates;
     };
+    
 
     const changeMonth = (offset) => {
         setDate((prevDate) => {
@@ -37,42 +137,61 @@ const AppointmentScheduler = () => {
         });
     };
 
+    const handleProceedToBooking = () => {
+        if (!selectedSlot || !selectedDate) return;
+        
+        const currentSlot = slots.morning.find(s => s.id === selectedSlot) || 
+                           slots.evening.find(s => s.id === selectedSlot);
+        
+        const bookingData = {
+            doctorId,
+            slotId: selectedSlot,
+            appointmentDate: format(new Date(selectedDate), 'yyyy-MM-dd'), 
+            appointmentType,
+            selectedTime: currentSlot?.time
+        };
+    
+        const queryString = new URLSearchParams({
+            doctorId: bookingData.doctorId,
+            slotId: bookingData.slotId.toString(),
+            appointmentDate: bookingData.appointmentDate,
+            appointmentType: bookingData.appointmentType,
+            selectedTime: bookingData.selectedTime || ''
+        }).toString();
+    
+        router.push(`/booking?${queryString}`);
+    };
+
+
     const isCurrentMonth = date.getFullYear() === new Date().getFullYear() && date.getMonth() === new Date().getMonth();
-
-    const timeSlotsOfMorning = [
-        { time: "9:00 AM", available: true },
-        { time: "9:30 AM", available: true },
-        { time: "10:00 AM", available: true },
-        { time: "10:30 AM", available: true },
-        { time: "11:00 AM", available: true },
-        { time: "11:30 AM", available: true },
-        { time: "12:00 PM", available: true },
-        { time: "12:30 PM", available: true },
-    ];
-
-    const timeSlotsOfAfternoon = [
-        { time: "4:30 PM", available: true },
-        { time: "5:00 PM", available: true },
-        { time: "5:30 PM", available: true },
-        { time: "6:00 PM", available: true },
-        { time: "6:30 PM", available: true },
-        { time: "7:00 PM", available: true },
-        { time: "7:30 PM", available: true },
-        { time: "8:00 PM", available: true },
-    ];
-
     const dates = generateDatesForMonth(date);
 
     return (
         <div className={styles.container}>
             <div className={styles.box}>
                 <h2 className={styles.title}>Schedule Appointment</h2>
-                <button className={styles.bookButton}>Book Appointment</button>
+                <button 
+                    className={styles.bookButton}
+                    onClick={handleProceedToBooking}
+                    disabled={!selectedSlot}
+                >
+                    Proceed to Booking
+                </button>
             </div>
 
             <div className={styles.tabContainer}>
-                <button className={`${styles.tab} ${styles.activeTab}`}>Book Video Consult</button>
-                <button className={styles.tab}>Book Hospital Visit</button>
+                <button 
+                    className={`${styles.tab} ${appointmentType === 'online' ? styles.activeTab : ''}`}
+                    onClick={() => setAppointmentType('online')}
+                >
+                    Book Video Consult
+                </button>
+                <button 
+                    className={`${styles.tab} ${appointmentType === 'offline' ? styles.activeTab : ''}`}
+                    onClick={() => setAppointmentType('offline')}
+                >
+                    Book Hospital Visit
+                </button>
             </div>
 
             <div className={styles.dropdownWrapper}>
@@ -98,7 +217,7 @@ const AppointmentScheduler = () => {
                     <CircleChevronLeft size={28} className={styles.icon} />
                 </button>
                 <h3 className={styles.heading}>
-                    {format(date, "MMMM yyyy")} 
+                    {format(date, "MMMM yyyy")}
                 </h3>
                 <button className={styles.dateButton} onClick={() => changeMonth(1)}>
                     <CircleChevronRight size={28} className={styles.icon} />
@@ -109,47 +228,59 @@ const AppointmentScheduler = () => {
 
             <div className={styles.slotSection}>
                 <h3 className={styles.slotTitle}>
-                    <Sun /> Morning <span className={styles.slotCount}>2 Slots</span>
+                    <Sun /> Morning <span className={styles.slotCount}>{slots.morning.length} Slots</span>
                 </h3>
                 <hr className={styles.slotHr} />
                 <div className={styles.slotGrid}>
-                    {timeSlotsOfMorning.map((slot, index) => (
-                        <button
-                            key={index}
-                            className={`${styles.slotButton} ${!slot.available ? styles.disabledSlot : ""} ${
-                                selectedSlot === slot.time ? styles.selectedSlot : ""
-                            }`}
-                            disabled={!slot.available}
-                            onClick={() => slot.available && setSelectedSlot(slot.time)}
-                        >
-                            {slot.time}
-                        </button>
-                    ))}
+                    {isLoading ? (
+                        <div>Loading slots...</div>
+                    ) : (
+                        slots.morning.map((slot) => (
+                            <button
+                                key={slot.id}
+                                className={`${styles.slotButton} ${!slot.available ? styles.disabledSlot : ""} ${
+                                    selectedSlot === slot.id ? styles.selectedSlot : ""
+                                }`}
+                                disabled={!slot.available}
+                                onClick={() => {
+                                    setSelectedSlot(slot.id);
+                                    setSelectedTime(slot.time);
+                                }}
+                            >
+                                {slot.time}
+                            </button>
+                        ))
+                    )}
                 </div>
             </div>
 
             <div className={styles.slotSection}>
                 <h3 className={styles.slotTitle}>
-                    <Sunset /> Afternoon <span className={styles.slotCount}>2 Slots</span>
+                    <Sunset /> Evening <span className={styles.slotCount}>{slots.evening.length} Slots</span>
                 </h3>
                 <hr className={styles.slotHr} />
                 <div className={styles.slotGrid}>
-                    {timeSlotsOfAfternoon.map((slot, index) => (
-                        <button
-                            key={index}
-                            className={`${styles.slotButton} ${!slot.available ? styles.disabledSlot : ""} ${
-                                selectedSlot === slot.time ? styles.selectedSlot : ""
-                            }`}
-                            disabled={!slot.available}
-                            onClick={() => slot.available && setSelectedSlot(slot.time)}
-                        >
-                            {slot.time}
-                        </button>
-                    ))}
+                    {isLoading ? (
+                        <div>Loading slots...</div>
+                    ) : (
+                        slots.evening.map((slot) => (
+                            <button
+                                key={slot.id}
+                                className={`${styles.slotButton} ${!slot.available ? styles.disabledSlot : ""} ${
+                                    selectedSlot === slot.id ? styles.selectedSlot : ""
+                                }`}
+                                disabled={!slot.available}
+                                onClick={() => {
+                                    setSelectedSlot(slot.id);
+                                    setSelectedTime(slot.time);
+                                }}
+                            >
+                                {slot.time}
+                            </button>
+                        ))
+                    )}
                 </div>
             </div>
-
-            <button className={styles.nextButton}>Next</button>
         </div>
     );
 };

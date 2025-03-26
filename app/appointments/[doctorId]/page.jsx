@@ -1,15 +1,28 @@
 "use client"
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import AppointmentScheduler from "@/app/components/AppointmentScheduler/AppointmentScheduler";
 import styles from "./doctorAppointments.module.css";
+// import { useAuth } from "@/app/context/AuthContext";
+import { useEffect } from "react";
 
 const Appointments = () => {
-    const params = useParams(); 
-    console.log(params);
-    const doctorId = params?.doctorId; 
+    const params = useParams();
+    const router = useRouter();
+    // const { isLoggedIn } = useAuth();
+    const doctorId = params?.doctorId;
+
+    // useEffect(() => {
+    //     if (!isLoggedIn) {
+    //         alert('Please login to book an appointment');
+    //         router.push('/login');
+    //         return;
+    //     }
+    // }, [isLoggedIn, router]);
+
     if (!doctorId) {
         return <p style={{ color: "red" }}>Error: Doctor ID not found!</p>;
     }
+
     return (
         <div>
             <div className={styles.appointments}>
