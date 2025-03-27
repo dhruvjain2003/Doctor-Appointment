@@ -68,7 +68,7 @@ const AddReview = () => {
 
   return (
     <div className={styles.container}>
-      <ToastContainer position="top-right" autoClose={3000} />
+      <Toaster position="top-right" autoClose={3000} />
       <h1>Add Review</h1>
       <div className={styles.reviewForm}>
         <div className={styles.doctorInfo}>
