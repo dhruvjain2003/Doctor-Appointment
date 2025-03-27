@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import styles from "./my-appointments.module.css";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const MyAppointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -10,9 +11,8 @@ const MyAppointments = () => {
   const { isLoggedIn, token } = useAuth();
   const router = useRouter();
 
-  
   useEffect(() => {
-    if (token === null) return; // Ensure authentication state is loaded before redirecting
+    if (token === null) return; 
   
     if (!isLoggedIn) {
       router.replace("/login");
@@ -39,8 +39,6 @@ const MyAppointments = () => {
   
     fetchAppointments();
   }, [token, isLoggedIn]);
-  
-  
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
@@ -107,6 +105,14 @@ const MyAppointments = () => {
                       <strong>Problem:</strong> {appointment.problem_description}
                     </p>
                   )}
+                  {appointment.status.toLowerCase() === "completed" && (
+                    <Link 
+                      href={`/add-review?appointmentId=${appointment.id}&doctorId=${appointment.doctor_id}&doctorName=${encodeURIComponent(appointment.doctor_name)}`}
+                      className={styles.reviewButton}
+                    >
+                      Add Review
+                    </Link>
+                  )}
                 </div>
               </div>
             );
@@ -117,4 +123,4 @@ const MyAppointments = () => {
   );
 };
 
-export default MyAppointments; 
+export default MyAppointments;

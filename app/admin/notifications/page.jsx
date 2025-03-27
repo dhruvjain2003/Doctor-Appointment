@@ -49,7 +49,6 @@ export default function Notifications() {
 
             const data = await response.json();
             if (response.ok) {
-                // Remove the appointment from the list
                 setAppointments(appointments.filter(app => app.id !== id));
                 setError(null);
             } else {
@@ -77,7 +76,7 @@ export default function Notifications() {
                         <div key={app.id} className={styles.appointmentCard}>
                             <div className={styles.appointmentInfo}>
                                 <h3>Patient: {app.patient_name}</h3>
-                                <p>Doctor: Dr. {app.doctor_name}</p>
+                                <p>Doctor: {app.doctor_name}</p>
                                 <p>Date: {format(new Date(app.appointment_date), 'MMMM d, yyyy')}</p>
                                 <p>Time: {app.slot_time}</p>
                                 <p>Type: {app.appointment_type}</p>

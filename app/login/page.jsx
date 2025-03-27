@@ -6,8 +6,6 @@ import { AtSign, Lock, Eye, EyeOff } from "lucide-react";
 import styles from "./login.module.css";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext"; 
-// import { toast } from "react-hot-toast";
-// import { Toaster } from "react-hot-toast";
 
 function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
