@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { UserPlus, ClipboardCheck,CheckCircle } from "lucide-react"; 
+import { UserPlus, ClipboardCheck, CheckCircle, Trash2 } from "lucide-react"; 
 import styles from "./admin.module.css";
 
 export default function AdminDashboard() {
@@ -18,7 +18,7 @@ export default function AdminDashboard() {
             router.replace("/");
         }
     }, [user, router]);    
-    console.log(user);
+
     return (
         <div className={styles.container}>
             <h2 className={styles.heading}>Admin Dashboard</h2>
@@ -27,6 +27,11 @@ export default function AdminDashboard() {
                     <UserPlus size={40} className={styles.icon} />
                     <h3 className={styles.heading2}>Add Doctor</h3>
                     <p className={styles.para}>Manage and add new doctors to the system.</p>
+                </Link>
+                <Link href="/admin/delete-doctor" className={styles.card}>
+                    <Trash2 size={40} className={styles.icon} />
+                    <h3 className={styles.heading2}>Delete Doctor</h3>
+                    <p className={styles.para}>Remove doctors from the system.</p>
                 </Link>
                 <Link href="/admin/notifications" className={styles.card}>
                     <ClipboardCheck size={40} className={styles.icon} />
