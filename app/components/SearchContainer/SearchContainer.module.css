@@ -91,12 +91,6 @@
     font-weight: bold; 
   }
 
-/* .noResults {
-    margin-top: 8px;
-    color: #888;
-    font-size: 14px;
-    text-align: center;
-} */
 
 @media (max-width: 768px) {
     .container {

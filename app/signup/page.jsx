@@ -12,16 +12,48 @@ function Signup() {
     password: "",
   });
 
+  const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+
+  const validateForm = () => {
+    let errors = {};
+  
+    if (!formData.name.trim()) {
+      errors.name = "Full name is required";
+    } else if (formData.name.length < 3) {
+      errors.name = "Name must be at least 3 characters long";
+    }
+  
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim()) {
+      errors.email = "Email is required";
+    } else if (!emailPattern.test(formData.email)) {
+      errors.email = "Enter a valid email address";
+    }
+  
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+    if (!formData.password.trim()) {
+      errors.password = "Password is required";
+    } else if (!passwordPattern.test(formData.password)) {
+      errors.password =
+        "Password must be at least 6 characters and contain at least one uppercase and one lowercase letter";
+    }
+  
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+  
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const router = useRouter();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) return;
+
     try {
       const response = await fetch("http://localhost:5000/api/auth/signup", {
         method: "POST",
@@ -30,17 +62,18 @@ function Signup() {
         },
         body: JSON.stringify(formData),
       });
+
       if (response.ok) {
         const data = await response.json();
-        console.log("Signup successful:", data);
         alert("Successfully signed up! Now login.");
         router.push("/login");
       } else {
         const error = await response.json();
-        console.error("Signup failed:", error);
+        alert(error.message || "Signup failed");
       }
     } catch (err) {
       console.error("An error occurred:", err);
+      alert("Something went wrong. Please try again.");
     }
   };
 
@@ -53,7 +86,7 @@ function Signup() {
           <Link href="/login" className={styles.authLink}>Login.</Link>
         </p>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>Full Name</label>
             <div className={styles.inputWrapper}>
@@ -68,6 +101,7 @@ function Signup() {
                 required
               />
             </div>
+            {errors.name && <p className={styles.errorText}>{errors.name}</p>}
           </div>
 
           <div className={styles.inputGroup}>
@@ -84,6 +118,7 @@ function Signup() {
                 required
               />
             </div>
+            {errors.email && <p className={styles.errorText}>{errors.email}</p>}
           </div>
 
           <div className={styles.inputGroup}>
@@ -105,13 +140,17 @@ function Signup() {
                 <Eye className={styles.eyeIcon} size={20} color="#555" onClick={() => setShowPassword(true)} />
               )}
             </div>
+            {errors.password && <p className={styles.errorText}>{errors.password}</p>}
           </div>
 
           <button type="submit" className={styles.authBtn}>Sign Up</button>
           <button
             type="reset"
             className={styles.resetBtn}
-            onClick={() => setFormData({ name: "", email: "", password: "" })}
+            onClick={() => {
+              setFormData({ name: "", email: "", password: "" });
+              setErrors({});
+            }}
           >
             Reset
           </button>

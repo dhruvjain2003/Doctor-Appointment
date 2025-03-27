@@ -5,12 +5,13 @@ import { toast } from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const searchParams = useSearchParams();
   const message = searchParams.get("message");
   const toastShown = useRef(false); 
-
+  const router=useRouter();
   useEffect(() => {
     if (message === "success" && !toastShown.current) {
       toast.success("Login was successful! 🎉");
@@ -28,7 +29,7 @@ export default function Home() {
           ease, explore health blogs, and stay on top of your well-being, all in
           one place.
         </p>
-        <button className={styles.heroButton}>Get Started</button>
+        <button className={styles.heroButton} onClick={()=>{router.push("/appointments")}}>Get Started</button>
       </div>
       <div className={styles.heroImageContainer}>
         <Image

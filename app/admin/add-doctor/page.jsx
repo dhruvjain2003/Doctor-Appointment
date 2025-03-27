@@ -28,8 +28,8 @@ export default function AddDoctor() {
     });
 
     const [errors, setErrors] = useState({});
-    const [isLoading, setIsLoading] = useState(false); // Loader state
-    const [successMessage, setSuccessMessage] = useState(""); // Success message state
+    const [isLoading, setIsLoading] = useState(false); 
+    const [successMessage, setSuccessMessage] = useState(""); 
 
     const validateForm = () => {
         let newErrors = {};
@@ -83,8 +83,8 @@ export default function AddDoctor() {
         e.preventDefault();
         if (!validateForm()) return;
 
-        setIsLoading(true); // Show loader
-        setSuccessMessage(""); // Clear previous success message
+        setIsLoading(true); 
+        setSuccessMessage(""); 
 
         const formData = new FormData();
         formData.append("name", doctorData.name);
@@ -118,14 +118,14 @@ export default function AddDoctor() {
             console.error(error);
             setSuccessMessage("Something went wrong. Please try again.");
         } finally {
-            setIsLoading(false); // Hide loader
+            setIsLoading(false); 
         }
     };
 
     return (
         <div>
-            {isLoading && <div className={styles.loader}></div>} {/* Loader */}
-            {successMessage && <div className={styles.alert}>{successMessage}</div>} {/* Success/Failure Message */}
+            {isLoading && <div className={styles.loader}></div>}
+            {successMessage && <div className={styles.alert}>{successMessage}</div>} 
             <form onSubmit={handleSubmit} className={styles.form} encType="multipart/form-data">
                 <input
                     type="text"

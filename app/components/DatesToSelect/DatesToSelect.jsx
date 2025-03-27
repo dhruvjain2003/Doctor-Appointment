@@ -19,25 +19,16 @@ const DatesToSelect = ({ dates, selectedDate, setSelectedDate }) => {
   };
 
   const handleDateSelection = (item) => {
-    console.log("Selected item:", item);
-    // Create a new date object from the current selectedDate to preserve time
     const newDate = new Date(selectedDate);
-    // Parse the date string (e.g., "Mar 26") and set it to the new date
     const [month, day] = item.date.split(" ");
-    
-    // Get current year from selectedDate
     const year = newDate.getFullYear();
-    
-    // Convert month abbreviation to month number (0-11)
     const months = {
       Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
       Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
     };
-    
+
     newDate.setMonth(months[month]);
     newDate.setDate(parseInt(day));
-    
-    console.log("New date object:", newDate);
     setSelectedDate(newDate);
   };
   
@@ -45,12 +36,7 @@ const DatesToSelect = ({ dates, selectedDate, setSelectedDate }) => {
     <div className={styles.dateSelectorWrapper}>
       <div className={styles.dateSelector} ref={scrollContainerRef}>
         {dates.map((item) => {
-          // Format the selectedDate the same way as item.date for comparison
           const formattedSelectedDate = format(selectedDate, "MMM dd");
-          console.log("Comparing dates:", {
-            itemDate: item.date,
-            selectedDate: formattedSelectedDate
-          });
           
           return (
             <button

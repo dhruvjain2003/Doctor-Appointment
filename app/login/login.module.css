@@ -85,7 +85,7 @@
     background: transparent;
 }
 
-.inputField::placeholder{
+.inputField::placeholder {
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -150,6 +150,64 @@
     text-decoration: underline;
 }
 
+.errorText {
+    font-size: 12px;
+    color: #d9534f;
+    margin-top: 5px;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.divider span {
+    padding: 0 10px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.googleBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background-color: white;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-bottom: 20px;
+}
+
+.googleBtn:hover {
+    background-color: #f9fafb;
+}
+
+.googleBtn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.googleIcon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
 @media screen and (max-width: 768px) {
     .loginBox {
         width: 90%;
@@ -170,7 +228,8 @@
         font-size: 28px;
     }
 
-    .loginBtn, .resetBtn {
+    .loginBtn,
+    .resetBtn {
         font-size: 14px;
         padding: 14px 40px;
     }
