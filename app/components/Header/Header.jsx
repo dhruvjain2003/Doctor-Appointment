@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { FiMenu, FiX } from "react-icons/fi";
-import { FaUserCircle } from "react-icons/fa"; // User icon
+import { FaUserCircle } from "react-icons/fa";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
@@ -10,7 +10,7 @@ import styles from "./Header.module.css";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false); // State for dropdown
+  const [dropdownOpen, setDropdownOpen] = useState(false); 
   const { isLoggedIn, logout } = useAuth();
   const router = useRouter();
 
@@ -48,6 +48,7 @@ const Header = () => {
                 {dropdownOpen && (
                   <div className={styles.dropdownMenu}>
                     <Link href="/dashboard" onClick={() => setDropdownOpen(false)}>Dashboard</Link>
+                    <Link href="/my-appointments" onClick={() => setDropdownOpen(false)}>Appointments</Link>
                   </div>
                 )}
               </div>

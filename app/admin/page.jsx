@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { UserPlus, ClipboardCheck } from "lucide-react"; 
+import { UserPlus, ClipboardCheck,CheckCircle } from "lucide-react"; 
 import styles from "./admin.module.css";
 
 export default function AdminDashboard() {
@@ -11,14 +11,13 @@ export default function AdminDashboard() {
     const router = useRouter();
 
     useEffect(() => {
+        if (user === null) return;
+    
         if (!user || user.role !== "admin") {
-            alert("You are not an admin. Redirecting..."); 
-
-            setTimeout(() => {
-                router.replace("/"); 
-            }, 1000);
+            alert("You are not an admin. Redirecting...");
+            router.replace("/");
         }
-    }, [user, router]);
+    }, [user, router]);    
     console.log(user);
     return (
         <div className={styles.container}>
@@ -33,6 +32,11 @@ export default function AdminDashboard() {
                     <ClipboardCheck size={40} className={styles.icon} />
                     <h3 className={styles.heading2}>Confirm/Reject Appointments</h3>
                     <p className={styles.para}>Approve or decline pending appointments.</p>
+                </Link>
+                <Link href="/admin/approved-appointments" className={styles.card}>
+                    <CheckCircle size={40} className={styles.icon} />
+                    <h3 className={styles.heading2}>Approved Appointments</h3>
+                    <p className={styles.para}>View and manage approved appointments.</p>
                 </Link>
             </div>
         </div>

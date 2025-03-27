@@ -10,7 +10,6 @@ export default function Notifications() {
 
     useEffect(() => {
         fetchPendingAppointments();
-        // Poll for new appointments every 30 seconds
         const interval = setInterval(fetchPendingAppointments, 30000);
         return () => clearInterval(interval);
     }, []);
