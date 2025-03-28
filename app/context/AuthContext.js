@@ -8,11 +8,12 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    if (storedToken && !token) {
+    if (storedToken) {
       try {
         const decoded = jwtDecode(storedToken);
         setUser(decoded);
@@ -21,8 +22,9 @@ export const AuthProvider = ({ children }) => {
         logout();
       }
     }
+    setLoading(false); 
   }, []);
-  
+
   const login = (newToken) => {
     try {
       localStorage.setItem("token", newToken);
@@ -45,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isLoggedIn: !!token }}>
+    <AuthContext.Provider value={{ user, token, login, logout, isLoggedIn: !!token, loading }}>
       {children}
     </AuthContext.Provider>
   );

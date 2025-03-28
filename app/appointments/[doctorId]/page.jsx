@@ -10,24 +10,27 @@ const Appointments = () => {
   const params = useParams();
   const router = useRouter();
   const doctorId = params?.doctorId;
-  const { user } = useAuth();
-  const redirectingRef = useRef(false); 
+  const { user,loading } = useAuth();
 
   useEffect(() => {
-    if (user === undefined || redirectingRef.current) return; 
-
+    if (loading) return; 
+  
     if (!user) {
-      redirectingRef.current = true; 
       toast.error("You are not logged in. Redirecting...", {
         position: "top-right",
         duration: 2000,
       });
-
+  
       setTimeout(() => {
         router.replace("/login");
       }, 2000);
     }
-  }, [user, router]);
+  }, [user, loading, router]);
+  
+  if (loading) {
+    return <p style={{ textAlign: "center", marginTop: "20px" }}>Loading...</p>;
+  }
+  
 
   if (!doctorId) {
     return <p style={{ color: "red" }}>Error: Doctor ID not found!</p>;

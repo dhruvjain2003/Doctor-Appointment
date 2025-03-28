@@ -233,7 +233,10 @@ const AppointmentScheduler = ({doctorId}) => {
                 <hr className={styles.slotHr} />
                 <div className={styles.slotGrid}>
                     {isLoading ? (
-                        <div>Loading slots...</div>
+                        <div className={styles.loaderWrapper}>
+                            <div className={styles.loader}></div>
+                            <p>Loading Slots</p>
+                        </div>
                     ) : (
                         slots.morning.map((slot) => (
                             <button
@@ -261,7 +264,10 @@ const AppointmentScheduler = ({doctorId}) => {
                 <hr className={styles.slotHr} />
                 <div className={styles.slotGrid}>
                     {isLoading ? (
-                        <div>Loading slots...</div>
+                        <div className={styles.loaderWrapper}>
+                            <div className={styles.loader}></div>
+                            <p>Loading Slots</p>
+                        </div>
                     ) : (
                         slots.evening.map((slot) => (
                             <button
