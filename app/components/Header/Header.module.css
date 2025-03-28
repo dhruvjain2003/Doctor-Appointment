@@ -52,9 +52,15 @@
     color: #065f46;
 }
 
-.homeLink {
+/* .homeLink {
     color: #1C4A2A !important;
+} */
+
+.activeLink {
+    color: #065f46 !important; 
+    font-weight: bolder;
 }
+
 
 .buttons {
     display: flex;

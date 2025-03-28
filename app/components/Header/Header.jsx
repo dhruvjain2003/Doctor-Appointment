@@ -6,7 +6,7 @@ import { FaUserCircle } from "react-icons/fa";
 import Image from "next/image";
 import { toast } from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useRouter,usePathname } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
 import styles from "./Header.module.css";
 
@@ -15,7 +15,7 @@ const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false); 
   const { isLoggedIn, logout } = useAuth();
   const router = useRouter();
-
+  const pathname = usePathname();
   const handleLogout = () => {
     logout();
     // toast.success("Successfully logged out! 🎉");
@@ -31,10 +31,10 @@ const Header = () => {
             <span>MedCare</span>
           </div>
           <div className={styles.navLinks}>
-            <Link href="/" className={styles.homeLink}>Home</Link>
-            <Link href="/appointments">Appointments</Link>
-            <Link href="/health-blog">Health Blog</Link>
-            <Link href="/reviews">Reviews</Link>
+            <Link href="/" className={pathname === "/" ? styles.activeLink : ""}>Home</Link>
+            <Link href="/appointments" className={pathname === "/appointments" ? styles.activeLink : ""}>Appointments</Link>
+            <Link href="/health-blog" className={pathname === "/health-blog" ? styles.activeLink : ""}>Health Blog</Link>
+            <Link href="/reviews" className={pathname === "/reviews" ? styles.activeLink : ""}>Reviews</Link>
           </div>
         </div>
         <div className={styles.mobileMenuIcon} onClick={() => setMenuOpen(!menuOpen)}>
@@ -71,6 +71,12 @@ const Header = () => {
         <Link href="/appointments" onClick={() => setMenuOpen(false)}>Appointments</Link>
         <Link href="/health-blog" onClick={() => setMenuOpen(false)}>Health Blog</Link>
         <Link href="/reviews" onClick={() => setMenuOpen(false)}>Reviews</Link>
+        {isLoggedIn && (
+          <>
+            <Link href="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link>
+            <Link href="/my-appointments" onClick={() => setMenuOpen(false)}>My Appointments</Link>
+          </>
+        )}
         <div className={styles.mobileButtons}>
           {isLoggedIn ? (
             <button className={styles.logout} onClick={() => { setMenuOpen(false); handleLogout(); }}>Logout</button>
