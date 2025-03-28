@@ -11,11 +11,13 @@ const Appointments = () => {
   const router = useRouter();
   const doctorId = params?.doctorId;
   const { user,loading } = useAuth();
+  const toastShownRef = useRef(false);
 
   useEffect(() => {
     if (loading) return; 
   
-    if (!user) {
+    if (!user && !toastShownRef.current) {
+      toastShownRef.current = true;
       toast.error("You are not logged in. Redirecting...", {
         position: "top-right",
         duration: 2000,
