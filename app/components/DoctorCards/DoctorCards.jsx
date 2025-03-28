@@ -8,12 +8,15 @@ const DoctorCards = ({ doctor }) => {
     const router = useRouter();
     const fullStars = Math.floor(doctor.rating || 0);
     const emptyStars = 5 - fullStars;
+    const handleProfileClick = () => {
+        router.push(`/doctor-profile/${doctor.id}`);
+    };
     const handleBooking = ()=>{
         router.push(`/appointments/${doctor.id}`);
     }
     return (
         <div className={styles.card}>
-            <img src={doctor.profile_image} alt={doctor.name} className={styles.profileImage} />
+            <img src={doctor.profile_image} alt={doctor.name} className={styles.profileImage} onClick={handleProfileClick} />
             <h3 className={styles.name}>{doctor.name}</h3>
             <div className={styles.details}>
                 <span className={styles.detail}>
