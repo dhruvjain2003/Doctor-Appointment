@@ -1,18 +1,18 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
 import { Toaster, toast } from "react-hot-toast";
 import styles from "./add-review.module.css";
 
-const AddReview = () => {
+const AddReviewContent = () => {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { token,user } = useAuth();
+  const { token, user } = useAuth();
 
   const appointmentId = searchParams.get("appointmentId");
   const doctorId = searchParams.get("doctorId");
@@ -127,4 +127,12 @@ const AddReview = () => {
   );
 };
 
-export default AddReview; 
+const AddReview = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AddReviewContent />
+    </Suspense>
+  );
+};
+
+export default AddReview;

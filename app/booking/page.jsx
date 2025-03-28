@@ -1,13 +1,12 @@
 "use client";
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Image from 'next/image';
 import styles from './booking.module.css';
 import { useAuth } from '@/app/context/AuthContext';
-import { toast } from "react-hot-toast";
-import { Toaster } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 
-const BookingPage = () => {
+const BookingPageContent = () => {
     const router = useRouter();
     const { user, isLoggedIn } = useAuth();
     const searchParams = useSearchParams();
@@ -35,7 +34,6 @@ const BookingPage = () => {
     useEffect(() => {
         console.log("Updated doctorDetails:", doctorDetails);
     }, [doctorDetails]);
-    
 
     useEffect(() => {
         const fetchDoctorDetails = async () => {
@@ -108,6 +106,7 @@ const BookingPage = () => {
     return (
         <div className={styles.container}>
             <h1 className={styles.title}>Confirm Appointment</h1>
+            <Toaster position="top-right" reverseOrder={false} />
             
             {doctorDetails ? (
                 <div className={styles.card}>
@@ -173,4 +172,10 @@ const BookingPage = () => {
     );
 };
 
-export default BookingPage;
+export default function BookingPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <BookingPageContent />
+        </Suspense>
+    );
+}
