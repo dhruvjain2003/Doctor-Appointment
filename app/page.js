@@ -8,6 +8,8 @@ import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  console.log("Backend URL:", backendURL);
   const searchParams = useSearchParams();
   const message = searchParams.get("message");
   const toastShown = useRef(false); 

@@ -16,7 +16,7 @@ export default function Notifications() {
 
     const fetchPendingAppointments = async () => {
         try {
-            const response = await fetch("http://localhost:5000/api/appointments/pending", {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/appointments/pending`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -38,7 +38,7 @@ export default function Notifications() {
 
     const handleDecision = async (id, status) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/appointments/${id}/status`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/appointments/${id}/status`, {
                 method: "PATCH",
                 headers: { 
                     'Content-Type': 'application/json',

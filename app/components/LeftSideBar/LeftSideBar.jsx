@@ -42,7 +42,7 @@ const LeftSideBar = ({ setDoctors }) => {
       filterMap.set("gender", gender !== "Show all" ? gender : -1);
       const filterObject = Object.fromEntries(filterMap);
       console.log(filterObject);
-      const response = await fetch("http://localhost:5000/api/doctors/filter", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/doctors/filter`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

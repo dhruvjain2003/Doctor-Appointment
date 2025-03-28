@@ -21,7 +21,7 @@ const MyAppointments = () => {
   
     const fetchAppointments = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/appointments/user", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/appointments/user`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

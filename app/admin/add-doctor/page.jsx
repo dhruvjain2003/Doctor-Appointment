@@ -95,7 +95,7 @@ export default function AddDoctor() {
         formData.append("profile_image", doctorData.profile_image);
 
         try {
-            const response = await fetch("http://localhost:5000/api/admin/add-doctor", {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/add-doctor`, {
                 method: "POST",
                 body: formData,
             });
@@ -124,7 +124,7 @@ export default function AddDoctor() {
 
     return (
         <div>
-            {isLoading && <div className={styles.loader}></div>}
+            {/* {isLoading && <div className={styles.loader}></div>} */}
             {successMessage && <div className={styles.alert}>{successMessage}</div>} 
             <form onSubmit={handleSubmit} className={styles.form} encType="multipart/form-data">
                 <input
@@ -191,8 +191,11 @@ export default function AddDoctor() {
                 />
                 {errors.profile_image && <span className={styles.error}>{errors.profile_image}</span>}
 
-                <button type="submit" className={styles.button} disabled={isLoading}>
+                {/* <button type="submit" className={styles.button} disabled={isLoading}>
                     {isLoading ? "Adding Doctor..." : "Add Doctor"}
+                </button> */}
+                <button type="submit" className={styles.button} disabled={isLoading}>
+                    {isLoading ? <span className={styles.buttonLoader}></span> : "Add Doctor"}
                 </button>
             </form>
         </div>

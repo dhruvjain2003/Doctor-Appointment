@@ -21,7 +21,7 @@ export default function ApprovedAppointments() {
 
     const fetchApprovedAppointments = async () => {
         try {
-            const response = await fetch("http://localhost:5000/api/appointments/confirmed", {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/appointments/confirmed`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -40,7 +40,7 @@ export default function ApprovedAppointments() {
 
     const handleMarkAsCompleted = async (appointmentId) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/appointments/${appointmentId}/completed`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/appointments/${appointmentId}/completed`, {
                 method: "PATCH",
                 headers: {
                     'Authorization': `Bearer ${token}`

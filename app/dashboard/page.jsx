@@ -39,7 +39,7 @@ const Dashboard = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/auth/user/delete",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/user/delete`,
         {
           method: "DELETE",
           headers: {
@@ -71,7 +71,7 @@ const Dashboard = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/auth/user/update",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/user/update`,
         {
           method: "PUT",
           headers: {
@@ -104,7 +104,7 @@ const Dashboard = () => {
 
       try {
         const response = await fetch(
-          "http://localhost:5000/api/auth/user/details",
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/user/details`,
           {
             method: "GET",
             headers: {

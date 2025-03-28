@@ -36,7 +36,7 @@ const AppointmentScheduler = ({doctorId}) => {
                 }
     
                 const formattedDate = format(dateToFormat, 'yyyy-MM-dd');
-                const response = await fetch(`http://localhost:5000/api/slots/${doctorId}?date=${formattedDate}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/slots/${doctorId}?date=${formattedDate}`);
                 const { data } = await response.json();
                 console.log('Received data from API:', data); 
     

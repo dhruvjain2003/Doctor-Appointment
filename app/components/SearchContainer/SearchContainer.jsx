@@ -31,7 +31,7 @@ const SearchContainer = ({ setDoctors }) => {
     setErrorMessage(""); 
     try {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:5000/api/doctors/search?query=${searchQuery}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/doctors/search?query=${searchQuery}`);
       const data = await response.json();
       setDoctors(Array.isArray(data) ? data : []);
       setSuggestions([]);
@@ -48,7 +48,7 @@ const SearchContainer = ({ setDoctors }) => {
 
     if (query.length > 2) {
       try {
-        const response = await fetch(`http://localhost:5000/api/doctors/search?query=${query}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/doctors/search?query=${query}`);
         const data = await response.json();
         setSuggestions(Array.isArray(data) ? data : []);
         setSelectedIndex(-1); 

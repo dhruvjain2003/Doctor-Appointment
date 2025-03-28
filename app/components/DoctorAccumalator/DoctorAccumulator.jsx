@@ -72,7 +72,7 @@ const DoctorList = () => {
     useEffect(() => {
         const fetchDoctors = async () => {
             try {
-                const response = await fetch("http://localhost:5000/api/doctors");
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/doctors`);
                 const data = await response.json();
                 // console.log(data);
                 setDoctors(data);

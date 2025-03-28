@@ -31,7 +31,7 @@ const AddReview = () => {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/reviews", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/reviews`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

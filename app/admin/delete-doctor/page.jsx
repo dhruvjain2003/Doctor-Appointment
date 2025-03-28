@@ -28,7 +28,7 @@ export default function DeleteDoctor() {
 
     const fetchDoctors = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/doctors`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/doctors`);
             if (!response.ok) throw new Error("Failed to fetch doctors");
             const data = await response.json();
             setDoctors(data);
@@ -58,7 +58,7 @@ export default function DeleteDoctor() {
         if (!confirm("Are you sure you want to delete this doctor?")) return;
 
         try {
-            const response = await fetch(`http://localhost:5000/api/doctors/${doctorId}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/doctors/${doctorId}`, {
                 method: "DELETE",
             });
 

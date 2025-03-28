@@ -41,7 +41,7 @@ const BookingPage = () => {
         const fetchDoctorDetails = async () => {
             try {
                 console.log('Fetching doctor details for ID:', bookingData.doctorId); 
-                const response = await fetch(`http://localhost:5000/api/doctors/${bookingData.doctorId}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/doctors/${bookingData.doctorId}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -73,7 +73,7 @@ const BookingPage = () => {
         setIsBooking(true);
         
         try {
-            const response = await fetch('http://localhost:5000/api/appointments', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/appointments`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
