@@ -69,13 +69,13 @@ const BookingPageContent = () => {
     const handleBookAppointment = async () => {
         if (isBooking) return;
         setIsBooking(true);
-        
+    
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/appointments`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify({
                     doctor_id: bookingData.doctorId,
@@ -85,19 +85,26 @@ const BookingPageContent = () => {
                     problem_description: problemDescription
                 })
             });
-
+    
             const data = await response.json();
-            if (data.success) {
+    
+            if (response.ok && data.success) {
+                // toast.success('Appointment booked successfully!');
                 router.push(`/appointments/?message=success`);
             } else {
-                console.error('Booking failed:', data.message);
+                if (data.message.includes("duplicate key value violates unique constraint")) {
+                    toast.error("This time slot is already booked. Please select another slot.");
+                } else {
+                    toast.error(data.message || "Failed to book appointment.");
+                }
             }
         } catch (error) {
+            toast.error("Something went wrong. Please try again.");
             console.error('Error booking appointment:', error);
         } finally {
             setIsBooking(false);
         }
-    };
+    };    
 
     if (loading) {
         return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
