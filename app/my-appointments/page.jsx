@@ -61,7 +61,9 @@ const MyAppointments = () => {
   };
 
   if (loading) {
-    return <div className={styles.loading}>Loading...</div>;
+    return (<div className={styles.loaderContainer}>
+                <div className={styles.loader}></div>
+            </div>);
   }
 
   return (
