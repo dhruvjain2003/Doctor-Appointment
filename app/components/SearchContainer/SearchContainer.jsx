@@ -66,7 +66,7 @@ const SearchContainer = ({ setDoctors }) => {
         <div className={styles.searchContainer}>
           <input
             type="text"
-            placeholder="Search doctors"
+            placeholder="Search doctors by name or speciality"
             className={styles.searchInput}
             value={searchQuery}
             onChange={handleInputChange}

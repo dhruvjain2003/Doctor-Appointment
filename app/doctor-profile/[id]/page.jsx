@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter,useParams } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import styles from "./doctorProfile.module.css";
-import { Stethoscope, Clock, Star, Mail, Phone } from "lucide-react";
+import { Stethoscope, Clock, Star, Mail, Phone, GraduationCap, DollarSign } from "lucide-react";
 
 const DoctorProfile = () => {
     const { id } = useParams();
@@ -54,6 +54,12 @@ const DoctorProfile = () => {
                 <p className={styles.experience}>
                     <Clock className={styles.icon} /> {doctor.experience} years of experience
                 </p>
+                <p className={styles.degree}>
+                    <GraduationCap className={styles.icon} /> {doctor.degree || "Not Available"}
+                </p>
+                <p className={styles.fee}>
+                    <DollarSign className={styles.icon} /> Consultation Fee: ₹{doctor.consultation_fee || "Not Available"}
+                </p>
                 <p className={styles.gender}><b>Gender:</b> {doctor.gender}</p>
                 <p className={styles.ratings}>
                     Ratings: 
@@ -65,8 +71,8 @@ const DoctorProfile = () => {
                     ))}
                 </p>
                 <div className={styles.contact}>
-                    <p><Mail className={styles.icon} /> example@hospital.com</p>
-                    <p><Phone className={styles.icon} /> +91 98765 43210</p>
+                    <p><Mail className={styles.icon} /> admin@hospital.com</p>
+                    <p><Phone className={styles.icon} /> {doctor.contact_number || "Not Available"}</p>
                 </div>
                 <button className={styles.bookButton} onClick={() => window.location.href = `/appointments/${doctor.id}`}>
                     Book Appointment
