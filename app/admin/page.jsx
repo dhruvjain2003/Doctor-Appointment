@@ -7,17 +7,17 @@ import { UserPlus, ClipboardCheck, CheckCircle, Trash2 } from "lucide-react";
 import styles from "./admin.module.css";
 
 export default function AdminDashboard() {
-    const { user } = useAuth();
+    const { user,loading } = useAuth();
     const router = useRouter();
 
     useEffect(() => {
-        if (user === undefined) return;
+        if (loading) return;
     
         if (!user || user.role !== "admin") {
             alert("You are not an admin. Redirecting...");
             router.replace("/");
         }
-    }, [user, router]);    
+    }, [user,loading, router]);    
 
     return (
         <div className={styles.container}>

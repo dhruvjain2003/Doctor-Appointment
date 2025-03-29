@@ -6,16 +6,16 @@ import styles from "./delete-doctor.module.css";
 import { Search, Trash2 } from "lucide-react";
 
 export default function DeleteDoctor() {
-    const { user } = useAuth();
+    const { user,loading } = useAuth();
     const router = useRouter();
     const [doctors, setDoctors] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredDoctors, setFilteredDoctors] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loadings, setLoadings] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (user === undefined) return;
+        if (loading) return;
     
         if (!user || user.role !== "admin") {
             alert("You are not an admin. Redirecting...");
@@ -24,7 +24,7 @@ export default function DeleteDoctor() {
         }
 
         fetchDoctors();
-    }, [user, router]);
+    }, [user,loading, router]);
 
     const fetchDoctors = async () => {
         try {
@@ -36,7 +36,7 @@ export default function DeleteDoctor() {
         } catch (err) {
             setError(err.message);
         } finally {
-            setLoading(false);
+            setLoadings(false);
         }
     };
 
@@ -72,7 +72,9 @@ export default function DeleteDoctor() {
         }
     };
 
-    if (loading) return <div className={styles.container}>Loading...</div>;
+    if (loadings) return (<div className={styles.loaderContainer}>
+            <div className={styles.loader}></div>
+        </div>);
     if (error) return <div className={styles.container}>Error: {error}</div>;
 
     return (

@@ -5,19 +5,19 @@ import { useRouter } from "next/navigation";
 import styles from "./approved-appointments.module.css";
 
 export default function ApprovedAppointments() {
-    const { user, token } = useAuth();
+    const { user, token,loading } = useAuth();
     const router = useRouter();
     const [appointments, setAppointments] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loadings, setLoadings] = useState(true);
 
     useEffect(() => {
-        if (user === undefined) return;
+        if (loading) return;
         if (!user || user.role !== "admin") {
             router.replace("/");
             return;
         }
         fetchApprovedAppointments();
-    }, [user, router]);
+    }, [user,loading, router]);
 
     const fetchApprovedAppointments = async () => {
         try {
@@ -34,7 +34,7 @@ export default function ApprovedAppointments() {
         } catch (error) {
             console.error("Error fetching approved appointments:", error);
         } finally {
-            setLoading(false);
+            setLoadings(false);
         }
     };
 
@@ -55,8 +55,10 @@ export default function ApprovedAppointments() {
         }
     };
 
-    if (loading) {
-        return <div className={styles.loading}>Loading...</div>;
+    if (loadings) {
+        return (<div className={styles.loaderContainer}>
+                    <div className={styles.loader}></div>
+                </div>);
     }
 
     return (

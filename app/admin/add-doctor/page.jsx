@@ -5,18 +5,18 @@ import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 
 export default function AddDoctor() {
-    const { user } = useAuth();
+    const { user,loading } = useAuth();
     const router = useRouter();
 
     useEffect(() => {
-        if (user === undefined) return;
+        if (loading) return;
         if (!user || user.role !== "admin") {
             alert("You are not an admin. Redirecting...");
             setTimeout(() => {
                 router.replace("/");
             }, 1000);
         }
-    }, [user, router]);
+    }, [user,loading, router]);
 
     const [doctorData, setDoctorData] = useState({
         name: "",

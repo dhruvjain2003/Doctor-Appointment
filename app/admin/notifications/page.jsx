@@ -7,19 +7,19 @@ import { useRouter } from "next/navigation";
 
 export default function Notifications() {
     const [appointments, setAppointments] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loadings, setLoadings] = useState(true);
     const [error, setError] = useState(null);
-    const { user } = useAuth();
+    const { user,loading } = useAuth();
     const router = useRouter();
     useEffect(() => {
-        if (user === undefined) return;
+        if (loading) return;
         if (!user || user.role !== "admin") {
             alert("You are not an admin. Redirecting...");
             setTimeout(() => {
                 router.replace("/");
             }, 1000);
         }
-    }, [user, router]);
+    }, [user,loading, router]);
 
     useEffect(() => {
         fetchPendingAppointments();
@@ -45,7 +45,7 @@ export default function Notifications() {
             console.error('Error fetching appointments:', error);
             setError('Failed to fetch appointments');
         } finally {
-            setLoading(false);
+            setLoadings(false);
         }
     };
 
@@ -73,8 +73,10 @@ export default function Notifications() {
         }
     };
 
-    if (loading) {
-        return <div className={styles.loading}>Loading...</div>;
+    if (loadings) {
+        return (<div className={styles.loaderContainer}>
+                    <div className={styles.loader}></div>
+                </div>);
     }
 
     return (
