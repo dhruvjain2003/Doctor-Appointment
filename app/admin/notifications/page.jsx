@@ -2,11 +2,24 @@
 import { useEffect, useState } from "react";
 import styles from "./notifications.module.css";
 import { format } from "date-fns";
+import { useAuth } from "@/app/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function Notifications() {
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { user } = useAuth();
+    const router = useRouter();
+    useEffect(() => {
+        if (user === undefined) return;
+        if (!user || user.role !== "admin") {
+            alert("You are not an admin. Redirecting...");
+            setTimeout(() => {
+                router.replace("/");
+            }, 1000);
+        }
+    }, [user, router]);
 
     useEffect(() => {
         fetchPendingAppointments();
