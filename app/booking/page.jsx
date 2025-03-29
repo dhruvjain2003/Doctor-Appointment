@@ -94,6 +94,9 @@ const BookingPageContent = () => {
             } else {
                 if (data.message.includes("duplicate key value violates unique constraint")) {
                     toast.error("This time slot is already booked. Please select another slot.");
+                    setTimeout(() => {
+                        router.back(); 
+                    }, 2000); 
                 } else {
                     toast.error(data.message || "Failed to book appointment.");
                 }
