@@ -9,7 +9,7 @@ export default function AddDoctor() {
     const router = useRouter();
 
     useEffect(() => {
-        if (user === null) return;
+        if (user === undefined) return;
         if (!user || user.role !== "admin") {
             alert("You are not an admin. Redirecting...");
             setTimeout(() => {

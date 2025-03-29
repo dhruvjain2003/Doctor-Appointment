@@ -15,7 +15,7 @@ export default function DeleteDoctor() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (user === null) return;
+        if (user === undefined) return;
     
         if (!user || user.role !== "admin") {
             alert("You are not an admin. Redirecting...");

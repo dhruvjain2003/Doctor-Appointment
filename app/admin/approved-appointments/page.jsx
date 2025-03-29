@@ -11,7 +11,7 @@ export default function ApprovedAppointments() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (user === null) return;
+        if (user === undefined) return;
         if (!user || user.role !== "admin") {
             router.replace("/");
             return;
