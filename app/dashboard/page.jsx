@@ -84,6 +84,10 @@ const Dashboard = () => {
 
       if (response.ok) {
         alert("Fields updated successfully.");
+        setUser((prevUser) => ({
+          ...prevUser,
+          ...optionalFields, 
+        }));
       } else {
         const data = await response.json();
         alert(data.message || "Failed to update fields. Please try again.");

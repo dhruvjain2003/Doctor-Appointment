@@ -12,17 +12,30 @@ function Login() {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { login,user } = useAuth();
   const router = useRouter();
 
+  // useEffect(() => {
+  //   const urlParams = new URLSearchParams(window.location.search);
+  //   const token = urlParams.get("token");
+  //   if (token) {
+  //     login(token);
+  //     router.push("/?message=success");
+  //   }
+  // }, []);
+
   useEffect(() => {
+    if (user) {
+      router.push(user.role === "admin" ? "/admin" : "/");
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get("token");
     if (token) {
       login(token);
-      router.push("/?message=success");
+      router.push("/");
     }
-  }, []);
+  }, [user, router, login]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
