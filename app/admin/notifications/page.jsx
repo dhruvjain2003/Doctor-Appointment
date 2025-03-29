@@ -4,6 +4,7 @@ import styles from "./notifications.module.css";
 import { format } from "date-fns";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Notifications() {
     const [appointments, setAppointments] = useState([]);
@@ -64,10 +65,13 @@ export default function Notifications() {
             if (response.ok) {
                 setAppointments(appointments.filter(app => app.id !== id));
                 setError(null);
+                toast.success(`Appointment ${status === "confirmed" ? "confirmed" : "rejected"} successfully!`);
             } else {
+                toast.error(data.message || 'Failed to update appointment status');
                 setError(data.message || 'Failed to update appointment status');
             }
         } catch (error) {
+            toast.error('Failed to update appointment status');
             console.error('Error updating appointment:', error);
             setError('Failed to update appointment status');
         }
@@ -81,6 +85,7 @@ export default function Notifications() {
 
     return (
         <div className={styles.container}>
+            <Toaster position="top-right" reverseOrder={false} />
             <h1 className={styles.title}>Pending Appointments</h1>
             {error && <div className={styles.error}>{error}</div>}
             {appointments.length === 0 ? (
