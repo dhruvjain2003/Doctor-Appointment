@@ -8,6 +8,7 @@ import { Stethoscope, Clock, Star, Mail, Phone, GraduationCap, DollarSign } from
 const DoctorProfile = () => {
     const { id } = useParams();
     const [doctor, setDoctor] = useState(null);
+    const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
@@ -17,7 +18,6 @@ const DoctorProfile = () => {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/doctors/${id}`);
                 if (!response.ok) throw new Error("Failed to fetch doctor data");
                 const data = await response.json();
-                console.log(data);
                 setDoctor(data.data);
             } catch (error) {
                 console.error(error);
@@ -25,7 +25,20 @@ const DoctorProfile = () => {
                 setLoading(false);
             }
         };
+
+        const fetchReviews = async () => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/reviews/doctor/${id}`);
+                if (!response.ok) throw new Error("Failed to fetch reviews");
+                const data = await response.json();
+                setReviews(data.reviews);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
         fetchDoctor();
+        fetchReviews();
     }, [id]);
 
     if (loading) return (
@@ -33,6 +46,7 @@ const DoctorProfile = () => {
             <div className={styles.loader}></div>
         </div>
     );
+    
     if (!doctor) return <p className={styles.error}>Doctor not found</p>;
 
     const fullStars = Math.floor(doctor.rating || 0);
@@ -77,6 +91,36 @@ const DoctorProfile = () => {
                 <button className={styles.bookButton} onClick={() => window.location.href = `/appointments/${doctor.id}`}>
                     Book Appointment
                 </button>
+            </div>
+
+            {/* Reviews Section */}
+            <div className={styles.reviewsSection}>
+                <h3>Patient Reviews</h3>
+                {reviews.length === 0 ? (
+                    <div className={styles.noReviews}>
+                        <p>No reviews available for this doctor yet.</p>
+                    </div>
+                ) : (
+                    reviews.map(review => (
+                        <div key={review.id} className={styles.reviewCard}>
+                            <p className={styles.reviewUser}>
+                                <b>{review.user_name}</b> • {new Date(review.created_at).toLocaleDateString()}
+                            </p>
+                            <p className={styles.reviewRating}>
+                                {Array.from({ length: review.rating }).map((_, index) => (
+                                    <Star 
+                                        key={index} 
+                                        className={styles.star} 
+                                        fill="gold" 
+                                        stroke="gold" 
+                                        size={16}
+                                    />
+                                ))}
+                            </p>
+                            <p className={styles.reviewComment}>"{review.comment}"</p>
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     );

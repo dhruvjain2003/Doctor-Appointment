@@ -228,7 +228,7 @@ const AppointmentScheduler = ({doctorId}) => {
 
             <div className={styles.slotSection}>
                 <h3 className={styles.slotTitle}>
-                    <Sun /> Morning <span className={styles.slotCount}>{slots.morning.length} Slots</span>
+                    <Sun /> Morning <span className={styles.slotCount}>{slots.morning.filter(slot => slot.available).length} Slots Available</span>
                 </h3>
                 <hr className={styles.slotHr} />
                 <div className={styles.slotGrid}>
@@ -259,7 +259,7 @@ const AppointmentScheduler = ({doctorId}) => {
 
             <div className={styles.slotSection}>
                 <h3 className={styles.slotTitle}>
-                    <Sunset /> Evening <span className={styles.slotCount}>{slots.evening.length} Slots</span>
+                    <Sunset /> Evening <span className={styles.slotCount}>{slots.evening.filter(slot => slot.available).length} Slots Available</span>
                 </h3>
                 <hr className={styles.slotHr} />
                 <div className={styles.slotGrid}>
