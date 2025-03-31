@@ -138,7 +138,10 @@ const AppointmentScheduler = ({doctorId}) => {
     };
 
     const handleProceedToBooking = () => {
-        if (!selectedSlot || !selectedDate) return;
+        if (!selectedSlot || !selectedDate) {
+            alert("Please select a slot before proceeding to booking!");
+            return;
+        }
         
         const currentSlot = slots.morning.find(s => s.id === selectedSlot) || 
                            slots.evening.find(s => s.id === selectedSlot);
