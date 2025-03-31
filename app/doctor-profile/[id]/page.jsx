@@ -92,8 +92,6 @@ const DoctorProfile = () => {
                     Book Appointment
                 </button>
             </div>
-
-            {/* Reviews Section */}
             <div className={styles.reviewsSection}>
                 <h3>Patient Reviews</h3>
                 {reviews.length === 0 ? (
