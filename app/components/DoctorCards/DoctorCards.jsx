@@ -11,12 +11,13 @@ const DoctorCards = ({ doctor }) => {
     const handleProfileClick = () => {
         router.push(`/doctor-profile/${doctor.id}`);
     };
-    const handleBooking = ()=>{
+    const handleBooking = (e)=>{
+        e.stopPropagation();
         router.push(`/appointments/${doctor.id}`);
     }
     return (
-        <div className={styles.card}>
-            <img src={doctor.profile_image} alt={doctor.name} className={styles.profileImage} onClick={handleProfileClick} />
+        <div className={styles.card} onClick={handleProfileClick}>
+            <img src={doctor.profile_image} alt={doctor.name} className={styles.profileImage}/>
             <h3 className={styles.name}>{doctor.name}</h3>
             <div className={styles.details}>
                 <span className={styles.detail}>

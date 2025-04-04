@@ -7,6 +7,7 @@
     text-align: center;
     background:  #F8FCF9;
     border: 1px solid #0000001f;
+    cursor: pointer;
 }
 
 .profileImage {
@@ -14,7 +15,6 @@
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    cursor: pointer;
 }
 
 .name {
@@ -90,5 +90,33 @@
 @media (max-width:768px) {
     .card{
         width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .profileImage {
+        width: 100px;
+        height: 100px;
+    }
+
+    .name {
+        font-size: 18px;
+        margin: 8px 0;
+    }
+
+    .ratings {
+        font-size: 14px;
+        margin: 10px auto;
+    }
+
+    .star {
+        width: 14px;
+        height: 14px;
+    }
+
+    .bookButton {
+        padding: 10px 14px;
+        font-size: 13px;
     }
 }
