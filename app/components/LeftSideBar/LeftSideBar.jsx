@@ -83,34 +83,64 @@ const LeftSideBar = ({ setDoctors }) => {
     </div>
   );
 
-  return (
-    <div className={styles.filterContainer}>
-      <div className={styles.filterHeader}>
-        <span className={styles.filterSpan}>Filter By:</span>
-        <button className={styles.resetButton} onClick={resetFilters}>
-          Reset
-        </button>
+  const [showFilters, setShowFilters] = useState(true);
+  const toggleFilters = () => {
+    setShowFilters(!showFilters);
+  };
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setShowFilters(false);
+      } else {
+        setShowFilters(true);
+      }
+    };
+  
+    handleResize(); 
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+return (
+  <div className={styles.filterWrapper}>
+    <button className={styles.toggleButton} onClick={toggleFilters}>
+      {showFilters ? "Hide Filters" : "Show Filters"}
+    </button>
+    {showFilters && (
+      <div className={styles.filterContainer}>
+        <div className={styles.filterHeader}>
+          <span className={styles.filterSpan}>Filter By:</span>
+          <button className={styles.resetButton} onClick={resetFilters}>
+            Reset
+          </button>
+        </div>
+        {renderFilterSection("Rating", "rating", [
+          "Show all",
+          "1 star",
+          "2 star",
+          "3 star",
+          "4 star",
+          "5 star",
+        ])}
+        {renderFilterSection("Experience", "experience", [
+          "Show all",
+          "15+ years",
+          "10-15 years",
+          "5-10 years",
+          "3-5 years",
+          "1-3 years",
+          "0-1 years",
+        ])}
+        {renderFilterSection("Gender", "gender", [
+          "Show all",
+          "Male",
+          "Female",
+        ])}
       </div>
-      {renderFilterSection("Rating", "rating", [
-        "Show all",
-        "1 star",
-        "2 star",
-        "3 star",
-        "4 star",
-        "5 star",
-      ])}
-      {renderFilterSection("Experience", "experience", [
-        "Show all",
-        "15+ years",
-        "10-15 years",
-        "5-10 years",
-        "3-5 years",
-        "1-3 years",
-        "0-1 years",
-      ])}
-      {renderFilterSection("Gender", "gender", ["Show all", "Male", "Female"])}
-    </div>
-  );
+    )}
+  </div>
+);
+
 };
 
 export default LeftSideBar;

@@ -5,11 +5,9 @@
 
 .title {
     font-weight: 500;
-    margin-top: 3rem;
-    font-size: 60px;
-    letter-spacing: -0.5px;
-    line-height: 180%;
+    font-size: 2rem;
     color:#0E2515;
+    margin-top: 1rem;
 }
 
 .para {
@@ -113,6 +111,12 @@
 
 
 @media (min-width: 768px) {
+    .title{
+        letter-spacing: -0.5px;
+        font-size: 60px;
+        margin-top: 3rem;
+        line-height: 180%;
+    }
     .subContainer {
         flex-direction: row;
     }

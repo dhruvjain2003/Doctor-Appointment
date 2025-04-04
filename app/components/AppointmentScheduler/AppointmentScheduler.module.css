@@ -67,10 +67,6 @@
     border: 1px solid #ddd;
 }
 
-
-
-
-
 .slotSection {
     box-shadow: 1px 1px 10px #00000011;
     padding: 15px;
@@ -146,13 +142,10 @@
     font-weight: 500;
 }
 
-
-
-
-
 .dropdownWrapper {
     position: relative;
     width: 100%;
+    max-width: 100%;
 }
 
 .dropdown {
@@ -248,6 +241,15 @@
 
 
 @media (max-width: 468px) {
+
+    .dropdownWrapper {
+        padding-right: 0;
+      }
+
+    .dropdown{
+        font-size: 14px;
+    }
+
     .bookButton{
         margin-top: 1rem;
     }
