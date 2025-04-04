@@ -87,19 +87,13 @@ const LeftSideBar = ({ setDoctors }) => {
   const toggleFilters = () => {
     setShowFilters(!showFilters);
   };
+
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setShowFilters(false);
-      } else {
-        setShowFilters(true);
-      }
-    };
+    if (window.innerWidth < 768) {
+      setShowFilters(false); 
+    }
+  }, []); 
   
-    handleResize(); 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
 return (
   <div className={styles.filterWrapper}>
