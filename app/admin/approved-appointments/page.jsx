@@ -72,7 +72,7 @@ export default function ApprovedAppointments() {
                         <div key={appointment.id} className={styles.appointmentCard}>
                             <div className={styles.appointmentInfo}>
                                 <h3 className={styles.patientName}>Patient: {appointment.patient_name}</h3>
-                                <p className={styles.doctorName}>Doctor: {appointment.doctor_name}</p>
+                                <p className={styles.doctorName}>Doctor: {appointment.doctor_name.replace(/^Dr\.?\s*/i, "")}</p>
                                 <p className={styles.date}>Date: {new Date(appointment.appointment_date).toLocaleDateString()}</p>
                                 <p className={styles.time}>Time: {appointment.slot_time}</p>
                                 <p className={styles.type}>Type: {appointment.appointment_type}</p>

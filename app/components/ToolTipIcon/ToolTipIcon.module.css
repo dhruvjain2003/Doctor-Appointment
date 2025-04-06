@@ -1,0 +1,30 @@
+.tooltipWrapper {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.icon {
+    font-size: 24px;
+    color: #25D366;
+    transition: transform 0.2s ease;
+}
+
+.icon:hover {
+    transform: scale(1.1);
+}
+
+.tooltip {
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 999;
+    opacity: 0.9;
+}

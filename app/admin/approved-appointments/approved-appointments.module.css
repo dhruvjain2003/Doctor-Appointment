@@ -1,5 +1,5 @@
 .container {
-    padding: 2rem;
+    padding: 2rem 1rem;
     max-width: 1200px;
     margin: 0 auto;
     min-height: 77vh;
@@ -29,13 +29,15 @@
 .appointmentsList {
     display: grid;
     gap: 1.5rem;
+    grid-template-columns: repeat(3, 1fr);
 }
 
 .appointmentCard {
     background: white;
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                0 2px 4px -1px rgba(0, 0, 0, 0.06);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -44,11 +46,13 @@
 
 .appointmentCard:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+                0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .appointmentInfo {
     flex: 1;
+    margin-right: 1rem;
 }
 
 .patientName {
@@ -75,20 +79,19 @@
 }
 
 .completeButton {
-    background-color: #1C4A2A;
+    background-color: #2563eb;
     color: white;
     border: none;
-    padding: 0.75rem 1.5rem;
+    padding: 0.6rem 1.2rem;
     border-radius: 8px;
     cursor: pointer;
     font-weight: 500;
     transition: all 0.2s ease;
-    margin-left: 1rem;
     white-space: nowrap;
 }
 
 .completeButton:hover {
-    background-color: #15391f;
+    background-color: #1d4ed8;
     transform: translateY(-1px);
 }
 
@@ -110,12 +113,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 75vh; 
+    min-height: 75vh;
 }
 
 .loader {
     border: 6px solid #f3f3f3;
-    border-top: 6px solid #065f46; 
+    border-top: 6px solid #065f46;
     border-radius: 50%;
     width: 20vh;
     height: 20vh;
@@ -127,8 +130,28 @@
     100% { transform: rotate(360deg); }
 }
 
-@keyframes loading {
-    to {
-        transform: rotate(360deg);
+@media (max-width: 1023px) {
+    .appointmentsList {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 639px) {
+    .appointmentsList {
+        grid-template-columns: 1fr;
+    }
+
+    .appointmentCard {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .appointmentInfo {
+        margin-right: 0;
+    }
+
+    .completeButton {
+        align-self: flex-end;
     }
 }
