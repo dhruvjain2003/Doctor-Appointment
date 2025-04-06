@@ -6,14 +6,14 @@
     gap: 2rem;
     min-height: 75vh;
     background-color: #f8f9fa;
-    padding: 80px 20px 20px;
+    padding: 65px 20px 20px;
     width: 100%;
     margin: 0 auto;
 }
 
 .header {
     position: fixed;
-    top: 115px;
+    top: 110px;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
@@ -113,7 +113,14 @@
     gap: 8px;
 }
 
-.bookButton {
+.actionsRow {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.bookButton,.shareButton {
     margin-top: 15px;
     padding: 10px 15px;
     background-color: #1E4D2B;
@@ -125,8 +132,13 @@
     transition: background-color 0.2s;
 }
 
-.bookButton:hover {
-    background-color: #163D20;
+.shareButton{
+    background-color: white;
+    color: #163d20;
+}
+
+.bookButton:hover{
+  background-color: #163d20;
 }
 
 .error {
@@ -164,7 +176,7 @@
     padding: 25px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     height: fit-content;
-    max-height: 432px;
+    max-height: 470px;
     overflow-y: auto;
     margin-top: 0;
 }
@@ -235,6 +247,30 @@
     align-items: center;
     justify-content: center;
 }
+
+.ratingBarWrapper {
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    height: 10px;
+    width: 100%;
+    margin: 6px 0 10px;
+    overflow: hidden;
+}
+
+.ratingBar {
+    height: 100%;
+    background-color: #1E4D2B;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.ratingNumber {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: -5px;
+    margin-bottom: -5px;
+}
+
 
 @media (max-width: 1024px) {
     .container {
