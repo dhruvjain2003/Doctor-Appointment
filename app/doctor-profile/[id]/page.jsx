@@ -69,7 +69,7 @@ const DoctorProfile = () => {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
     const url = `${baseUrl}/doctor-profile/${doctor.id}`;
   
-    const shareText = `🩺 Check out Dr. ${doctor.name} (${doctor.specialty}) on MedCare!\n👉 Book Now: ${url}`;
+    const shareText = `🩺 Check out ${doctor.name} (${doctor.specialty}) on MedCare!\n👉 Book Now: ${url}`;
   
     if (navigator.share) {
       navigator
