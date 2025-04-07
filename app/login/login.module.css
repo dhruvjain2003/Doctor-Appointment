@@ -218,6 +218,10 @@
 }
 
 @media screen and (max-width: 480px) {
+    .container{
+        background-position: right;
+    }
+
     .loginBox {
         width: 95%;
         padding: 20px 15px;
