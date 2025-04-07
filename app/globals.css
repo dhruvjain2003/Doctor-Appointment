@@ -25,6 +25,10 @@ body {
   padding-top: 92.4px;
 }
 
+button,input,textarea{
+  font-family: inherit;
+}
+
 body::-webkit-scrollbar {
   display: none; 
 }

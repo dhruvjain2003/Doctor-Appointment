@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "./components/Header/Header";
 import Footer from './components/Footer/Footer';
 import { AuthProvider } from './context/AuthContext';
+import ChatSupport from './components/ChatSupport/ChatSupport';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
         <AuthProvider>  
           <Header />
           <main className="container">{children}</main>
+          <ChatSupport />
           <Footer />
         </AuthProvider>
       </body>
