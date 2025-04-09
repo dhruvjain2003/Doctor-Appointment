@@ -3,7 +3,10 @@ import { NextResponse } from 'next/server';
 export async function POST(req) {
   const { messages } = await req.json();
   const api = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
-  const context = messages.map(msg => `${msg.sender}: ${msg.text}`).join('\n');
+  const structuredMessages = messages.map(msg => ({
+    role: msg.sender === 'user' ? 'user' : 'model',
+    parts: [{ text: msg.text }],
+  })); 
 
   try {
     const response = await fetch(
@@ -14,7 +17,7 @@ export async function POST(req) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: context }] }],
+          contents: structuredMessages,
         }),
       }
     );
