@@ -65,7 +65,7 @@
 
 'use client';
 
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useRef } from 'react';
 import { Bot, X, Send } from 'lucide-react';
 import styles from './ChatSupport.module.css';
 
@@ -74,6 +74,12 @@ export default function ChatSupport() {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const bottomRef = useRef(null);
+  useEffect(() => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, isLoading,open]);
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -159,6 +165,7 @@ export default function ChatSupport() {
                 <div className={styles.messageInfo}>MedCare AI</div>
               </div>
             )}
+            <div ref={bottomRef} />
           </div>
           
           <div className={styles.chatInputContainer}>
