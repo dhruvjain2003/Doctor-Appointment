@@ -1,72 +1,7 @@
-// 'use client';
-
-// import { useState } from 'react';
-// import { Bot, X } from 'lucide-react';
-// import styles from './ChatSupport.module.css';
-
-// export default function ChatSupport() {
-//   const [open, setOpen] = useState(false);
-//   const [input, setInput] = useState('');
-//   const [messages, setMessages] = useState([]);
-
-//   const handleSend = async () => {
-//     if (!input.trim()) return;
-  
-//     const newMessages = [...messages, { sender: 'You', text: input }];
-//     setMessages(newMessages);
-//     setInput('');
-//     const prompt = `Give a concise answer to: ${input}`;
-//     const res = await fetch('/api/chat', {
-//       method: 'POST',
-//       body: JSON.stringify({ message: prompt }),
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     });
-  
-//     const data = await res.json();
-  
-//     if (data.response) {
-//       setMessages([...newMessages, { sender: 'AI', text: data.response }]);
-//     }
-//   };
-  
-
-//   return (
-//     <>
-//       <div className={styles.chatIcon} onClick={() => setOpen(!open)}>
-//         {open ? <X size={20} /> : <Bot size={20} />}
-//       </div>
-
-//       {open && (
-//         <div className={styles.chatPopup}>
-//           <h2 className={styles.chatTitle}>Ask MedCare AI 💬</h2>
-
-//           <div className={styles.chatMessages}>
-//             {messages.map((msg, index) => (
-//               <div key={index}><strong>{msg.sender}:</strong> {msg.text}</div>
-//             ))}
-//           </div>
-
-//           <textarea
-//             placeholder="Type your question..."
-//             value={input}
-//             onChange={(e) => setInput(e.target.value)}
-//             className={styles.chatTextarea}
-//           />
-//           <button className={styles.chatSend} onClick={handleSend}>
-//             Send
-//           </button> helllooop
-//         </div>
-//       )}
-//     </>
-//   );
-// }
-
 'use client';
 
 import { useState,useEffect,useRef } from 'react';
-import { Bot, X, Send } from 'lucide-react';
+import { Bot, X, Send,Loader } from 'lucide-react';
 import styles from './ChatSupport.module.css';
 
 export default function ChatSupport() {
@@ -75,6 +10,7 @@ export default function ChatSupport() {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const bottomRef = useRef(null);
+
   useEffect(() => {
     if (bottomRef.current) {
       bottomRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -96,7 +32,7 @@ export default function ChatSupport() {
     try {
         const res = await fetch('/api/chat', {
             method: 'POST',
-            body: JSON.stringify({ messages: [...newMessages, { sender: 'You', text: prompt }] }),
+            body: JSON.stringify({ messages: [...newMessages, { sender: 'user', text: prompt }] }),
             headers: {
               'Content-Type': 'application/json',
             },
@@ -105,6 +41,8 @@ export default function ChatSupport() {
       
       if (data.response) {
         setMessages([...newMessages, { sender: 'ai', text: data.response }]);
+        console.log(data.response);
+        speak(data.response);
       }
     } catch (error) {
       setMessages([...newMessages, { sender: 'ai', text: "Sorry, I couldn't process your request. Please try again." }]);
@@ -112,6 +50,36 @@ export default function ChatSupport() {
       setIsLoading(false);
     }
   };
+
+  const speak = (text) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    const speakNow = () => {
+      const voices = window.speechSynthesis.getVoices();
+      console.log("Available voices:", voices);
+  
+      const preferredVoice = voices.find(
+        (voice) =>
+          voice.name.toLowerCase().includes('female') ||
+          voice.name.toLowerCase().includes('samantha') || 
+          voice.name.toLowerCase().includes('karen') ||    
+          voice.name.toLowerCase().includes('zira')        
+      );
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+      }
+      utterance.rate = 1; 
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+    };
+    if (window.speechSynthesis.getVoices().length === 0) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        speakNow();
+      };
+    } else {
+      speakNow();
+    }
+  };
+  
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -122,7 +90,7 @@ export default function ChatSupport() {
 
   return (
     <>
-      <div className={styles.chatIcon} onClick={() => setOpen(!open)}>
+      <div className={styles.chatIcon} onClick={() => setOpen(!open)} title="Chat with MedCare AI">
         {open ? <X size={20} /> : <Bot size={20} />}
       </div>
       
@@ -181,7 +149,7 @@ export default function ChatSupport() {
               onClick={handleSend}
               disabled={isLoading || !input.trim()}
             >
-              <Send size={18} />
+              {isLoading ? <Loader className="animate-spin" size={18} /> : <Send size={18} />}
             </button>
           </div>
         </div>
