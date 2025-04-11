@@ -1,6 +1,5 @@
 "use client";
-
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect,useRef,Suspense } from "react";
 import Link from "next/link";
 import { AtSign, Lock, Eye, EyeOff } from "lucide-react";
 import styles from "./login.module.css";
@@ -177,4 +176,10 @@ function Login() {
   );
 }
 
-export default Login;
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div>Loading login form...</div>}>
+      <Login />
+    </Suspense>
+  );
+}
