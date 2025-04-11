@@ -4,7 +4,7 @@ import { useEffect, useState, Suspense } from 'react';
 import Image from 'next/image';
 import styles from './booking.module.css';
 import { useAuth } from '@/app/context/AuthContext';
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 const BookingPageContent = () => {
     const router = useRouter();
@@ -116,8 +116,6 @@ const BookingPageContent = () => {
     return (
         <div className={styles.container}>
             <h1 className={styles.title}>Confirm Appointment</h1>
-            <Toaster position="top-right" reverseOrder={false} />
-            
             {doctorDetails ? (
                 <div className={styles.card}>
                     <div className={styles.doctorInfo}>

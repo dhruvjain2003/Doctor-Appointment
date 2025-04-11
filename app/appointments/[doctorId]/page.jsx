@@ -4,7 +4,7 @@ import AppointmentScheduler from "@/app/components/AppointmentScheduler/Appointm
 import styles from "./doctorAppointments.module.css";
 import { useAuth } from "@/app/context/AuthContext";
 import { useEffect, useRef } from "react";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 const Appointments = () => {
   const params = useParams();
@@ -40,7 +40,6 @@ const Appointments = () => {
 
   return (
     <div>
-      <Toaster />
       <div className={styles.appointments}>
         <div className={styles.left}>
           <h1 className={styles.heading}>

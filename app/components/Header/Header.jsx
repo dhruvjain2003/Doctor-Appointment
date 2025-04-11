@@ -4,11 +4,10 @@ import Link from "next/link";
 import { FiMenu, FiX } from "react-icons/fi";
 import { FaUserCircle } from "react-icons/fa";
 import Image from "next/image";
-import { toast } from "react-hot-toast";
-import { Toaster } from "react-hot-toast";
 import { useRouter,usePathname } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
 import styles from "./Header.module.css";
+import { toast } from "react-hot-toast";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -19,6 +18,9 @@ const Header = () => {
   const handleLogout = () => {
     logout();
     // toast.success("Successfully logged out! 🎉");
+    toast.success("See you next time 👋",{
+      duration:2000
+    });
     router.push("/login");
   };
 

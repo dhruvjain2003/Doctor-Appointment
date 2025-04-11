@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import Link from "next/link";
 import { AtSign, Lock, Eye, EyeOff } from "lucide-react";
 import styles from "./login.module.css";
-import { useRouter } from "next/navigation";
+import { useRouter,useSearchParams } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
+import { toast } from "react-hot-toast";
 
 function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -13,29 +14,37 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { login,user } = useAuth();
+  const searchParams = useSearchParams();
+  const toastShown = useRef(false);
   const router = useRouter();
-
-  // useEffect(() => {
-  //   const urlParams = new URLSearchParams(window.location.search);
-  //   const token = urlParams.get("token");
-  //   if (token) {
-  //     login(token);
-  //     router.push("/?message=success");
-  //   }
-  // }, []);
-
+  
   useEffect(() => {
-    if (user) {
-      router.push(user.role === "admin" ? "/admin" : "/");
+    const token = searchParams.get("token");
+    const message = searchParams.get("message");
+  
+    if (user && !toastShown.current) {
+      router.push(user.role === "admin" ? "/admin" : `/?message=login_success`);
+      toastShown.current = true;
     }
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get("token");
+  
     if (token && !user) {
       login(token);
       router.push("/");
     }
-  }, [user, router, login]);
+  
+    if (message && !toastShown.current) {
+      if (message === "signup_success") {
+        toast.success(
+          <div>
+            Signup successful! <br /> You can now log in 🎉
+          </div>,
+          { duration: 3000 }
+        );
+      }
+      toastShown.current = true;
+    }
+  }, [user, router, login]);  
+  
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -60,7 +69,7 @@ function Login() {
         if (data.user.role === "admin") {
           router.push("/admin");
         } else {
-          router.push("/?message=success");
+          router.push("/?message=login_success");
         }
       } else {
         setErrors({ form: data.message || "Invalid credentials" });

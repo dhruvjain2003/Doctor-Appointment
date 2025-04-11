@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import styles from "./page.module.css";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, Suspense } from "react";
 import { useRouter } from "next/navigation";
@@ -15,15 +15,19 @@ const HomeContent = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (message === "success" && !toastShown.current) {
-      toast.success("Login was successful! 🎉");
+    if (message === "login_success" && !toastShown.current) {
+      toast.success("Login was successful! 🎉",{
+        duration:5000
+      });
       toastShown.current = true; 
+      const url = new URL(window.location.href);
+      url.searchParams.delete("message");
+      window.history.replaceState({}, "", url.toString());
     }
   }, [message]); 
 
   return (
     <section className={styles.heroSection}>
-      <Toaster position="top-right" reverseOrder={false} />
       <div className={styles.heroContent}>
         <h1>Health in Your Hands.</h1>
         <p>

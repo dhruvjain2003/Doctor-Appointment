@@ -4,7 +4,7 @@ import styles from "./notifications.module.css";
 import { format } from "date-fns";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
-import toast, { Toaster } from "react-hot-toast";
+import {toast} from "react-hot-toast";
 
 export default function Notifications() {
     const [appointments, setAppointments] = useState([]);
@@ -85,7 +85,6 @@ export default function Notifications() {
 
     return (
         <div className={styles.container}>
-            <Toaster position="top-right" reverseOrder={false} />
             <h1 className={styles.title}>Pending Appointments</h1>
             {error && <div className={styles.error}>{error}</div>}
             {appointments.length === 0 ? (

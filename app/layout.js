@@ -4,6 +4,7 @@ import Header from "./components/Header/Header";
 import Footer from './components/Footer/Footer';
 import { AuthProvider } from './context/AuthContext';
 import ChatSupport from './components/ChatSupport/ChatSupport';
+import { Toaster } from "react-hot-toast";
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={montserrat.className}>
+        <Toaster position="top-right" reverseOrder={false} />
         <AuthProvider>  
           <Header />
           <main className="container">{children}</main>

@@ -14,6 +14,7 @@ function Signup() {
 
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const validateForm = () => {
@@ -53,6 +54,7 @@ function Signup() {
     e.preventDefault();
     
     if (!validateForm()) return;
+    setLoading(true);
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`, {
@@ -65,8 +67,7 @@ function Signup() {
 
       if (response.ok) {
         const data = await response.json();
-        alert("Successfully signed up! Now login.");
-        router.push("/login");
+        router.push("/login?message=signup_success");
       } else {
         const error = await response.json();
         alert(error.message || "Signup failed");
@@ -74,6 +75,8 @@ function Signup() {
     } catch (err) {
       console.error("An error occurred:", err);
       alert("Something went wrong. Please try again.");
+    } finally{
+      setLoading(false);
     }
   };
 
@@ -143,7 +146,7 @@ function Signup() {
             {errors.password && <p className={styles.errorText}>{errors.password}</p>}
           </div>
 
-          <button type="submit" className={styles.authBtn}>Sign Up</button>
+          <button type="submit" className={styles.authBtn}  disabled={loading}>{loading ? "Signing up..." : "Sign Up"}</button>
           <button
             type="reset"
             className={styles.resetBtn}
@@ -151,6 +154,7 @@ function Signup() {
               setFormData({ name: "", email: "", password: "" });
               setErrors({});
             }}
+            disabled={loading}
           >
             Reset
           </button>

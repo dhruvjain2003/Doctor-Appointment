@@ -2,7 +2,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import styles from "./add-review.module.css";
 
 const AddReviewContent = () => {
@@ -48,7 +48,15 @@ const AddReviewContent = () => {
       const data = await response.json();
 
       if (data.success) {
-        toast.success("Review submitted successfully!");
+        toast.success("Review submitted successfully!", {
+          duration: 3000,
+          position: "top-right",
+          style: {
+            background: "#4BB543",
+            color: "#fff",
+          },
+          icon: "✅",
+        });        
         setTimeout(() => {
           router.push("/reviews");
         }, 2000);
@@ -68,7 +76,6 @@ const AddReviewContent = () => {
 
   return (
     <div className={styles.container}>
-      <Toaster position="top-right" autoClose={3000} />
       <h1>Add Review</h1>
       <div className={styles.reviewForm}>
         <div className={styles.doctorInfo}>
