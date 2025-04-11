@@ -14,8 +14,8 @@ const AvailableDoctorsContent = () => {
     if (message === "success" && !toastShown.current) {
       const toastId = toast.loading("Appointment request sent!\n Waiting for admin approval... ⏳");
       setTimeout(() => toast.dismiss(toastId), 5000);
-
       toastShown.current = true;
+      window.history.replaceState({}, "", window.location.pathname);
     }
   }, [message]);
 

@@ -5,12 +5,12 @@
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out;
+    /* transition: transform 0.2s ease-in-out; */
 }
 
-.container:hover {
+/* .container:hover {
     transform: scale(1.01);
-}
+} */
 
 .title {
     font-size: 2rem;
@@ -76,7 +76,7 @@
 
 .rating {
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     gap: 0.5rem;
     color: #4caf50;
@@ -181,6 +181,10 @@
 }
 
 @media (max-width: 640px) {
+    .rating{
+        justify-content: center;
+    }
+    
     .container {
         padding: 1rem;
         margin: 1rem;
