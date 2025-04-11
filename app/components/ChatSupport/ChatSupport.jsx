@@ -67,7 +67,8 @@ export default function ChatSupport() {
       if (preferredVoice) {
         utterance.voice = preferredVoice;
       }
-      utterance.rate = 1; 
+      const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+      utterance.rate = isMobile ? 1.1 : 1.6;
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(utterance);
     };
