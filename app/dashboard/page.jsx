@@ -3,6 +3,8 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
 import { useEffect, useState } from "react";
 import styles from "./dashboard.module.css";
+import { toast } from "react-hot-toast";
+import { Edit, Trash, Ruler , Phone, MapPin, Users, Heart , Weight} from 'lucide-react';
 
 const Dashboard = () => {
   const { logout } = useAuth();
@@ -83,7 +85,16 @@ const Dashboard = () => {
       );
 
       if (response.ok) {
-        alert("Fields updated successfully.");
+        toast.success("Updated successfully!", {
+          style: {
+            background: '#065f46',
+            color: '#fff',
+            fontWeight: 'bold',
+            borderRadius: '8px',
+            padding: '10px 20px',
+          },
+          icon: <Heart />,
+        });
         setUser((prevUser) => ({
           ...prevUser,
           ...optionalFields, 
@@ -94,7 +105,17 @@ const Dashboard = () => {
       }
     } catch (error) {
       console.error("Error updating fields:", error);
-      alert("An error occurred. Please try again.");
+      toast.error(data.message || "Failed to update fields. Please try again.", {
+        style: {
+          background: '#d9534f',
+          color: '#fff',
+          fontWeight: 'bold',
+          borderRadius: '8px',
+          padding: '10px 20px',
+        },
+        icon: <Trash />,
+      });
+      // alert("An error occurred. Please try again.");
     }
   };
 
@@ -160,23 +181,23 @@ const Dashboard = () => {
           <h2>Current Information</h2>
           <div className={styles.detailsGrid}>
             <div className={styles.detailItem}>
-              <strong>Email:</strong>
+              <strong><Users  size={18}/> Email:</strong>
               <span>{user?.email}</span>
             </div>
             <div className={styles.detailItem}>
-              <strong>Phone:</strong>
+              <strong><Phone size={18}/> Phone:</strong>
               <span>{user?.phone || 'Not set'}</span>
             </div>
             <div className={styles.detailItem}>
-              <strong>Address:</strong>
+              <strong><MapPin size={18}/> Address:</strong>
               <span>{user?.address || 'Not set'}</span>
             </div>
             <div className={styles.detailItem}>
-              <strong>Weight:</strong>
+              <strong><Weight size={18}/> Weight:</strong>
               <span>{user?.weight ? `${user.weight} kg` : 'Not set'}</span>
             </div>
             <div className={styles.detailItem}>
-              <strong>Height:</strong>
+              <strong><Ruler size={18}/> Height:</strong>
               <span>{user?.height ? `${user.height} cm` : 'Not set'}</span>
             </div>
             <div className={styles.detailItem}>

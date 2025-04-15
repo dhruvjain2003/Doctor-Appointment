@@ -17,6 +17,7 @@ const DoctorCards = ({ doctor }) => {
     }
     return (
         <div className={styles.card} onClick={handleProfileClick}>
+            <div className={styles.tooltip}>Click to view doctor's profile</div>
             <img src={doctor.profile_image} alt={doctor.name} className={styles.profileImage}/>
             <h3 className={styles.name}>{doctor.name}</h3>
             <div className={styles.details}>

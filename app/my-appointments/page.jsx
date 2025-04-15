@@ -111,6 +111,7 @@ const MyAppointments = () => {
                     <Link 
                       href={`/add-review?appointmentId=${appointment.id}&doctorId=${appointment.doctor_id}&doctorName=${encodeURIComponent(appointment.doctor_name)}`}
                       className={styles.reviewButton}
+                      aria-label="Add review for this appointment"
                     >
                       Add Review
                     </Link>
