@@ -54,16 +54,18 @@
 }
 
 .pagination button {
-    background: none;
-    border: none;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 8px 12px;
     cursor: pointer;
-    padding: 6px 10px;
-    color: #6b7280;
-    transition: color 0.2s ease-in-out;
+    transition: all 0.2s ease;
 }
 
 .pagination button:hover {
-    color: #1f2937;
+    background-color: #f9fafb;
+    border-color: #065f46;
+    color: #065f46;
 }
 
 .pageItem button {
@@ -73,9 +75,10 @@
 }
 
 .active button {
-    border-color: #065f46; 
-    color: #065f46;
-    font-weight: bold;
+    background-color: #065f46;
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
 }
 
 .disabled {
@@ -111,6 +114,21 @@
 
 
 @media (min-width: 768px) {
+    .pagination {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .pagination button {
+        padding: 6px 10px;
+        font-size: 13px;
+    }
+
+    .ellipsis {
+        font-size: 13px;
+        padding: 6px;
+    }
+    
     .title{
         letter-spacing: -0.5px;
         font-size: 60px;
