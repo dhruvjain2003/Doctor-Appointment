@@ -98,7 +98,7 @@ const LeftSideBar = ({ setDoctors }) => {
 return (
   <div className={styles.filterWrapper}>
     <button className={styles.toggleButton} onClick={toggleFilters}>
-      {showFilters ? "Hide Filters" : "Show Filters"}
+      {showFilters ? "Hide Filters ▴" : "Show Filters ▾"}
     </button>
     {showFilters && (
       <div className={styles.filterContainer}>
