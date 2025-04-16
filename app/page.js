@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, Suspense } from "react";
 import { useRouter } from "next/navigation";
+import Loader from "./components/Loader/Loader";
 
 const HomeContent = () => {
   const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -55,7 +56,7 @@ const HomeContent = () => {
 
 export default function Home() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loader />}>
       <HomeContent />
     </Suspense>
   );
