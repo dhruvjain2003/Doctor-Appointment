@@ -5,6 +5,7 @@ import Image from 'next/image';
 import styles from './booking.module.css';
 import { useAuth } from '@/app/context/AuthContext';
 import { toast } from "react-hot-toast";
+import Loader from '../components/Loader/Loader';
 
 const BookingPageContent = () => {
     const router = useRouter();
@@ -110,7 +111,7 @@ const BookingPageContent = () => {
     };    
 
     if (loading) {
-        return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+        return (<Loader />);
     }
 
     return (

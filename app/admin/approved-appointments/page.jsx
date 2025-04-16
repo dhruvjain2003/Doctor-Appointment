@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/navigation";
 import styles from "./approved-appointments.module.css";
+import Loader from "@/app/components/Loader/Loader";
 
 export default function ApprovedAppointments() {
     const { user, token,loading } = useAuth();
@@ -56,9 +57,7 @@ export default function ApprovedAppointments() {
     };
 
     if (loadings) {
-        return (<div className={styles.loaderContainer}>
-                    <div className={styles.loader}></div>
-                </div>);
+        return (<Loader />);
     }
 
     return (

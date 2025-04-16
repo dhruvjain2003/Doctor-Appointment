@@ -4,6 +4,7 @@ import styles from "./my-appointments.module.css";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Loader from "../components/Loader/Loader";
 
 const MyAppointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -61,9 +62,7 @@ const MyAppointments = () => {
   };
 
   if (loading) {
-    return (<div className={styles.loaderContainer}>
-                <div className={styles.loader}></div>
-            </div>);
+    return (<Loader />);
   }
 
   return (

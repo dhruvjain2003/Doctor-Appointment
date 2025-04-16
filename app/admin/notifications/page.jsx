@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 import {toast} from "react-hot-toast";
+import Loader from "@/app/components/Loader/Loader";
 
 export default function Notifications() {
     const [appointments, setAppointments] = useState([]);
@@ -78,9 +79,7 @@ export default function Notifications() {
     };
 
     if (loadings) {
-        return (<div className={styles.loaderContainer}>
-                    <div className={styles.loader}></div>
-                </div>);
+        return (<Loader />);
     }
 
     return (

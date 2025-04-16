@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/navigation";
 import styles from "./delete-doctor.module.css";
 import { Search, Trash2 } from "lucide-react";
+import Loader from "@/app/components/Loader/Loader";
 
 export default function DeleteDoctor() {
     const { user,loading } = useAuth();
@@ -72,9 +73,7 @@ export default function DeleteDoctor() {
         }
     };
 
-    if (loadings) return (<div className={styles.loaderContainer}>
-            <div className={styles.loader}></div>
-        </div>);
+    if (loadings) return (<Loader />);
     if (error) return <div className={styles.container}>Error: {error}</div>;
 
     return (

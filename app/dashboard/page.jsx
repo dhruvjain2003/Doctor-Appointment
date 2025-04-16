@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import styles from "./dashboard.module.css";
 import { toast } from "react-hot-toast";
 import { Edit, Trash, Ruler , Phone, MapPin, Users, Heart , Weight} from 'lucide-react';
+import Loader from "../components/Loader/Loader";
 
 const Dashboard = () => {
   const { logout } = useAuth();
@@ -164,9 +165,7 @@ const Dashboard = () => {
   }, [router]);
 
   if (loading) {
-    return (<div className={styles.loaderContainer}>
-              <div className={styles.loader}></div>
-          </div>);
+    return (<Loader />);
   }
 
   return (

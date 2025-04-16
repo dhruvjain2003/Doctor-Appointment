@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { formatDistanceToNow } from 'date-fns';
 import styles from "./reviews.module.css";
+import Loader from "../components/Loader/Loader";
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -60,7 +61,7 @@ const Reviews = () => {
   
 
   if (loading) {
-    return <div className={styles.loading}>Loading reviews...</div>;
+    return (<Loader />);
   }
 
   if (error) {
