@@ -5,6 +5,7 @@ import styles from "./doctorAppointments.module.css";
 import { useAuth } from "@/app/context/AuthContext";
 import { useEffect, useRef } from "react";
 import { toast } from "react-hot-toast";
+import Loader from "@/app/components/Loader/Loader";
 
 const Appointments = () => {
   const params = useParams();
@@ -30,7 +31,7 @@ const Appointments = () => {
   }, [user, loading, router]);
   
   if (loading) {
-    return <p style={{ textAlign: "center", marginTop: "20px" }}>Loading...</p>;
+    return (<Loader />);
   }
   
 
