@@ -183,7 +183,7 @@ const BookingPageContent = () => {
 
 export default function BookingPage() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Loader />}>
             <BookingPageContent />
         </Suspense>
     );

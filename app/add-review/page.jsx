@@ -4,6 +4,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
 import { toast } from "react-hot-toast";
 import styles from "./add-review.module.css";
+import Loader from "../components/Loader/Loader";
 
 const AddReviewContent = () => {
   const [rating, setRating] = useState(5);
@@ -136,7 +137,7 @@ const AddReviewContent = () => {
 
 const AddReview = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loader />}>
       <AddReviewContent />
     </Suspense>
   );

@@ -6,6 +6,7 @@ import styles from "./login.module.css";
 import { useRouter,useSearchParams } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
 import { toast } from "react-hot-toast";
+import Loader from "../components/Loader/Loader";
 
 function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -178,7 +179,7 @@ function Login() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div>Loading login form...</div>}>
+    <Suspense fallback={<Loader />}>
       <Login />
     </Suspense>
   );

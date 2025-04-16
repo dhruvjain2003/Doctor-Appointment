@@ -4,6 +4,7 @@ import DoctorAccumalator from "../components/DoctorAccumalator/DoctorAccumulator
 import { toast } from "react-hot-toast";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, Suspense } from "react";
+import Loader from "../components/Loader/Loader";
 
 const AvailableDoctorsContent = () => {
   const searchParams = useSearchParams();
@@ -31,7 +32,7 @@ const AvailableDoctorsContent = () => {
 
 export default function AvailableDoctors() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loader />}>
       <AvailableDoctorsContent />
     </Suspense>
   );
