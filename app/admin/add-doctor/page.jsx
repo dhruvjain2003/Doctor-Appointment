@@ -17,6 +17,7 @@ function AddDoctor() {
       }, 1000);
     }
   }, [user, loading, router]);
+  
 
   const [doctorData, setDoctorData] = useState({
     name: "",
@@ -33,6 +34,15 @@ function AddDoctor() {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
+  
 
   const validateForm = () => {
     let newErrors = {};
@@ -157,113 +167,206 @@ function AddDoctor() {
   };
 
   return (
-    <div>
-      {successMessage && <div className={styles.alert}>{successMessage}</div>}
-      <form
-        onSubmit={handleSubmit}
-        className={styles.form}
-        encType="multipart/form-data"
-      >
-        <div className={styles.formContainer}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Doctor's Name"
-            value={doctorData.name}
-            onChange={handleChange}
-            required
-            className={styles.input}
-          />
-          <input
-            type="text"
-            name="specialty"
-            placeholder="Specialty"
-            value={doctorData.specialty}
-            onChange={handleChange}
-            required
-            className={styles.input}
-          />
-
-          <input
-            type="number"
-            name="experience"
-            placeholder="Experience (years)"
-            value={doctorData.experience}
-            onChange={handleChange}
-            required
-            className={styles.input}
-          />
-          <input
-            type="number"
-            name="rating"
-            placeholder="Rating (1-5)"
-            value={doctorData.rating}
-            onChange={handleChange}
-            step="0.1"
-            min="1"
-            max="5"
-            required
-            className={styles.input}
-          />
-
-          <select
-            name="gender"
-            value={doctorData.gender}
-            onChange={handleChange}
-            required
-            className={`${styles.select} ${styles.fullWidth}`}
-          >
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-
-          <input
-            type="text"
-            name="degree"
-            placeholder="Degree (e.g., MBBS, MD)"
-            value={doctorData.degree}
-            onChange={handleChange}
-            required
-            className={styles.input}
-          />
-          <input
-            type="number"
-            name="consultation_fee"
-            placeholder="Consultation Fee (₹)"
-            value={doctorData.consultation_fee}
-            onChange={handleChange}
-            required
-            className={styles.input}
-          />
-
-          <input
-            type="text"
-            name="contact_number"
-            placeholder="Contact Number (Optional)"
-            value={doctorData.contact_number}
-            onChange={handleChange}
-            className={styles.input}
-          />
-
-          <input
-            type="file"
-            name="profile_image"
-            accept="image/*"
-            onChange={handleFileChange}
-            required
-            className={`${styles.file} ${styles.fullWidth}`}
-          />
+    <div className={styles.container}>
+      <div className={styles.card}>
+        <div className={styles.cardHeader}>
+          <h1 className={styles.cardTitle}>Add New Doctor</h1>
+          <p className={styles.cardSubtitle}>Complete the form below to add a doctor to the system</p>
         </div>
 
-        <button type="submit" className={styles.button} disabled={isLoading}>
-          {isLoading ? (
-            <span className={styles.buttonLoader}></span>
-          ) : (
-            "Add Doctor"
-          )}
-        </button>
-      </form>
+        {successMessage && (
+          <div className={styles.successAlert}>
+            <div className={styles.alertContent}>
+              <div className={styles.alertIcon}>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <p className={styles.alertMessage}>{successMessage}</p>
+            </div>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className={styles.form} encType="multipart/form-data">
+          <div className={styles.formGrid}>
+            <div className={styles.formSection}>
+              <h3 className={styles.sectionTitle}>Personal Information</h3>
+              
+              <div className={styles.fieldGroup}>
+                <div className={styles.field}>
+                  <label htmlFor="name" className={styles.label}>Doctor's Name</label>
+                  <input
+                    id="name"
+                    type="text"
+                    name="name"
+                    placeholder="Enter doctor's full name"
+                    value={doctorData.name}
+                    onChange={handleChange}
+                    required
+                    className={styles.input}
+                  />
+                  {errors.name && <span className={styles.error}>{errors.name}</span>}
+                </div>
+
+                <div className={styles.field}>
+                  <label htmlFor="gender" className={styles.label}>Gender</label>
+                  <select
+                    id="gender"
+                    name="gender"
+                    value={doctorData.gender}
+                    onChange={handleChange}
+                    required
+                    className={styles.select}
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                  {errors.gender && <span className={styles.error}>{errors.gender}</span>}
+                </div>
+
+                <div className={styles.field}>
+                  <label htmlFor="contact_number" className={styles.label}>Contact Number (Optional)</label>
+                  <input
+                    id="contact_number"
+                    type="text"
+                    name="contact_number"
+                    placeholder="10-digit phone number"
+                    value={doctorData.contact_number}
+                    onChange={handleChange}
+                    className={styles.input}
+                  />
+                  {errors.contact_number && <span className={styles.error}>{errors.contact_number}</span>}
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.formSection}>
+              <h3 className={styles.sectionTitle}>Professional Details</h3>
+              
+              <div className={styles.fieldGroup}>
+                <div className={styles.field}>
+                  <label htmlFor="specialty" className={styles.label}>Specialty</label>
+                  <input
+                    id="specialty"
+                    type="text"
+                    name="specialty"
+                    placeholder="e.g., Cardiology, Pediatrics"
+                    value={doctorData.specialty}
+                    onChange={handleChange}
+                    required
+                    className={styles.input}
+                  />
+                  {errors.specialty && <span className={styles.error}>{errors.specialty}</span>}
+                </div>
+
+                <div className={styles.field}>
+                  <label htmlFor="degree" className={styles.label}>Degree</label>
+                  <input
+                    id="degree"
+                    type="text"
+                    name="degree"
+                    placeholder="e.g., MBBS, MD, MS"
+                    value={doctorData.degree}
+                    onChange={handleChange}
+                    required
+                    className={styles.input}
+                  />
+                  {errors.degree && <span className={styles.error}>{errors.degree}</span>}
+                </div>
+
+                <div className={styles.fieldsRow}>
+                  <div className={styles.field}>
+                    <label htmlFor="experience" className={styles.label}>Experience (years)</label>
+                    <input
+                      id="experience"
+                      type="number"
+                      name="experience"
+                      placeholder="Years of experience"
+                      value={doctorData.experience}
+                      onChange={handleChange}
+                      required
+                      className={styles.input}
+                    />
+                    {errors.experience && <span className={styles.error}>{errors.experience}</span>}
+                  </div>
+
+                  <div className={styles.field}>
+                    <label htmlFor="rating" className={styles.label}>Rating</label>
+                    <input
+                      id="rating"
+                      type="number"
+                      name="rating"
+                      placeholder="1.0 - 5.0"
+                      step="0.1"
+                      min="1"
+                      max="5"
+                      value={doctorData.rating}
+                      onChange={handleChange}
+                      required
+                      className={styles.input}
+                    />
+                    {errors.rating && <span className={styles.error}>{errors.rating}</span>}
+                  </div>
+                </div>
+
+                <div className={styles.field}>
+                  <label htmlFor="consultation_fee" className={styles.label}>Consultation Fee (₹)</label>
+                  <input
+                    id="consultation_fee"
+                    type="number"
+                    name="consultation_fee"
+                    placeholder="Enter fee amount"
+                    value={doctorData.consultation_fee}
+                    onChange={handleChange}
+                    required
+                    className={styles.input}
+                  />
+                  {errors.consultation_fee && <span className={styles.error}>{errors.consultation_fee}</span>}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.fileUploadSection}>
+            <h3 className={styles.sectionTitle}>Profile Image</h3>
+            <div className={styles.fileUploadWrapper}>
+              <label htmlFor="profile_image" className={styles.fileUpload}>
+                <span className={styles.uploadIcon}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                  </svg>
+                </span>
+                <span className={styles.uploadLabel}>
+                  {doctorData.profile_image ? doctorData.profile_image.name : "Upload doctor's profile image"}
+                </span>
+                <input
+                  id="profile_image"
+                  type="file"
+                  name="profile_image"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  required
+                  className={styles.fileInput}
+                />
+              </label>
+              {errors.profile_image && <span className={styles.error}>{errors.profile_image}</span>}
+              <p className={styles.fileHint}>Accepted formats: JPEG, PNG, JPG (Max 2MB)</p>
+            </div>
+          </div>
+
+          <button type="submit" className={styles.submitButton} disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <span className={styles.buttonLoader}></span>
+                <span>Processing...</span>
+              </>
+            ) : (
+              "Add Doctor"
+            )}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
