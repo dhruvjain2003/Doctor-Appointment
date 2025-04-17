@@ -4,24 +4,25 @@ import styles from "./notifications.module.css";
 import { format } from "date-fns";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
-import {toast} from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import Loader from "@/app/components/Loader/Loader";
 
 export default function Notifications() {
     const [appointments, setAppointments] = useState([]);
     const [loadings, setLoadings] = useState(true);
     const [error, setError] = useState(null);
-    const { user,loading } = useAuth();
+    const { user, loading } = useAuth();
     const router = useRouter();
+
     useEffect(() => {
         if (loading) return;
         if (!user || user.role !== "admin") {
-            alert("You are not an admin. Redirecting...");
+            toast.error("Unauthorized access. Redirecting...");
             setTimeout(() => {
                 router.replace("/");
             }, 1000);
         }
-    }, [user,loading, router]);
+    }, [user, loading, router]);
 
     useEffect(() => {
         fetchPendingAppointments();
@@ -79,38 +80,66 @@ export default function Notifications() {
     };
 
     if (loadings) {
-        return (<Loader />);
+        return <Loader />;
     }
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>Pending Appointments</h1>
-            {error && <div className={styles.error}>{error}</div>}
+            <div className={styles.header}>
+                <h1 className={styles.title}>Pending Appointments</h1>
+                {appointments.length > 0 && 
+                    <div className={styles.counter}>{appointments.length} pending</div>
+                }
+            </div>
+            
+            {error && <div className={styles.errorBanner}>{error}</div>}
+            
             {appointments.length === 0 ? (
-                <p className={styles.noAppointments}>No pending appointments</p>
+                <div className={styles.emptyState}>
+                    <div className={styles.emptyIcon}>📅</div>
+                    <p>No pending appointments at this time</p>
+                    <p className={styles.emptySubtext}>All appointment requests have been processed</p>
+                </div>
             ) : (
                 <div className={styles.appointmentsList}>
                     {appointments.map(app => (
                         <div key={app.id} className={styles.appointmentCard}>
+                            <div className={styles.appointmentHeader}>
+                                <div className={styles.patientName}>{app.patient_name}</div>
+                                <div className={styles.appointmentBadge}>{app.appointment_type}</div>
+                            </div>
+                            
                             <div className={styles.appointmentInfo}>
-                                <h3>Patient: {app.patient_name}</h3>
-                                <p>Doctor: {app.doctor_name}</p>
-                                <p>Date: {format(new Date(app.appointment_date), 'MMMM d, yyyy')}</p>
-                                <p>Time: {app.slot_time}</p>
-                                <p>Type: {app.appointment_type}</p>
+                                <div className={styles.infoRow}>
+                                    <div className={styles.infoLabel}>Doctor</div>
+                                    <div className={styles.infoValue}>{app.doctor_name}</div>
+                                </div>
+                                <div className={styles.infoRow}>
+                                    <div className={styles.infoLabel}>Date</div>
+                                    <div className={styles.infoValue}>{format(new Date(app.appointment_date), 'MMMM d, yyyy')}</div>
+                                </div>
+                                <div className={styles.infoRow}>
+                                    <div className={styles.infoLabel}>Time</div>
+                                    <div className={styles.infoValue}>{app.slot_time}</div>
+                                </div>
+                                
                                 {app.problem_description && (
-                                    <p>Problem: {app.problem_description}</p>
+                                    <div className={styles.problemDescription}>
+                                        <div className={styles.problemLabel}>Problem Description:</div>
+                                        <p>{app.problem_description}</p>
+                                    </div>
                                 )}
                             </div>
+                            
                             <div className={styles.actions}>
                                 <button 
-                                    className={`${styles.button} ${styles.approve}`}
+                                    className={`${styles.button} ${styles.confirmBtn}`}
                                     onClick={() => handleDecision(app.id, "confirmed")}
                                 >
                                     Confirm
                                 </button>
                                 <button 
-                                    className={`${styles.button} ${styles.reject}`}
+                                    className={`${styles.button} ${styles.rejectBtn}`}
                                     onClick={() => handleDecision(app.id, "rejected")}
                                 >
                                     Reject
