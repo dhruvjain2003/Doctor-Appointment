@@ -220,10 +220,11 @@
 @media screen and (max-width: 480px) {
     .container{
         background-position: right;
+        height: 80vh;
     }
 
     .loginBox {
-        width: 95%;
+        /* width: 95%; */
         padding: 20px 15px;
         margin: 15px auto;
     }
