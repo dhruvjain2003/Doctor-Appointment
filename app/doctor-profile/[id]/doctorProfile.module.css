@@ -55,6 +55,7 @@
     max-width: 380px;
     height: fit-content;
     transition: transform 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .card:hover {
