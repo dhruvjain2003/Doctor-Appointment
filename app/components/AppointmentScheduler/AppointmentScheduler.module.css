@@ -239,6 +239,14 @@
     100% { transform: rotate(360deg); }
 }
 
+@media (max-width: 767px) {
+    .container{
+        margin: 11px 11px;
+    }
+    .bookButton{
+        width: 100%;
+    }
+}
 
 @media (max-width: 468px) {
 

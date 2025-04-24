@@ -63,7 +63,7 @@
 
 @media (max-width: 767px) {
     .left {
-        padding: 20px;
+        display: none;
     }
 
     .heading {
