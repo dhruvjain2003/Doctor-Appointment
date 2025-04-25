@@ -85,8 +85,10 @@
   display: inline-block;
   font-size: 12px;
   margin-top: 10px;
+  font-weight: 500;
+  text-transform: capitalize;
+  border: 1px solid #00796b;
 }
-
 
 .loader {
   display: flex;
@@ -108,14 +110,23 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
 }
 
-@media (max-width:480px){
-  .heading{
+@media (max-width:480px) {
+  .heading {
     display: block;
-    margin:0px auto;
+    margin: 0px auto;
+  }
+
+  .content {
+    font-size: 14px;
+  }
+
+  .title {
+    font-size: 18px;
   }
 }

@@ -170,6 +170,7 @@ const Pagination = ({
     pageNumbers.push(totalPages);
   }
 
+  window.scrollTo({ top: 0, behavior: "smooth" });
   return (
     <nav>
       <ul className={styles.pagination}>
