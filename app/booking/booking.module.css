@@ -1,6 +1,7 @@
 .container {
     max-width: 900px;
     margin: 2rem auto;
+    background-color: #f1f8e9;
     padding: 2rem;
     background-color: #ffffff;
     border-radius: 12px;
@@ -182,9 +183,15 @@
 
 .buttonDisabled {
     background-color: #c8e6c9;
-    cursor: not-allowed;
+    cursor: not-allowed !important;
     transform: none !important;
     box-shadow: none !important;
+}
+
+.hint {
+    font-size: 0.85rem;
+    color: #ff6b6b;
+    margin-top: 5px;
 }
 
 @media (max-width: 640px) {

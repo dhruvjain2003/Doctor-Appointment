@@ -9,20 +9,21 @@ import Loader from '../components/Loader/Loader';
 
 const BookingPageContent = () => {
     const router = useRouter();
-    const { user, isLoggedIn } = useAuth();
+    const { user, isLoggedIn,loading } = useAuth();
     const searchParams = useSearchParams();
     const [doctorDetails, setDoctorDetails] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loadings, setLoading] = useState(true);
     const [problemDescription, setProblemDescription] = useState('');
     const [isBooking, setIsBooking] = useState(false);
 
     useEffect(() => {
+        if(loading) return ;
         if (!isLoggedIn) {
-            alert('Please login to book an appointment');
+            toast.error('Please login to book an appointment');
             router.push('/login');
             return;
         }
-    }, [isLoggedIn, router]);
+    }, [isLoggedIn, router,loading]);
 
     const bookingData = {
         doctorId: searchParams.get('doctorId'),
@@ -69,6 +70,15 @@ const BookingPageContent = () => {
 
     const handleBookAppointment = async () => {
         if (isBooking) return;
+        if (!problemDescription.trim()) {
+            toast.error("Please describe your medical concern.");
+            return;
+        }        
+        console.log("Problem is",problemDescription);
+        if (!problemDescription.trim()) {
+            toast.error("Please describe your medical concern.");
+            return;
+        }
         setIsBooking(true);
     
         try {
@@ -110,7 +120,7 @@ const BookingPageContent = () => {
         }
     };    
 
-    if (loading) {
+    if (loadings) {
         return (<Loader />);
     }
 
@@ -168,11 +178,15 @@ const BookingPageContent = () => {
                     onChange={(e) => setProblemDescription(e.target.value)}
                     placeholder="Please describe your medical concern..."
                 />
+                {!problemDescription.trim() && (
+                    <p className={styles.hint}>* Please describe your concern to proceed with booking.</p>
+                )}
             </div>
 
             <button
-                className={`${styles.button} ${isBooking ? styles.buttonDisabled : ''}`}
+                className={`${styles.button} ${(!problemDescription.trim() || isBooking) ? styles.buttonDisabled : ''}`}
                 onClick={handleBookAppointment}
+                title={!problemDescription.trim() ? "Add medical concern to enable booking" : ""}
                 disabled={isBooking || !problemDescription.trim()}
             >
                 {isBooking ? 'Booking...' : 'Confirm Booking'}
