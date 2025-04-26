@@ -3,6 +3,7 @@ import styles from "./add-doctor.module.css";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 function AddDoctor() {
   const { user, loading } = useAuth();
@@ -11,7 +12,7 @@ function AddDoctor() {
   useEffect(() => {
     if (loading) return;
     if (!user || user.role !== "admin") {
-      alert("You are not an admin. Redirecting...");
+      toast.error("You are not an admin. Redirecting...");
       setTimeout(() => {
         router.replace("/");
       }, 1000);

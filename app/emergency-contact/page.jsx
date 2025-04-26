@@ -1,5 +1,38 @@
 import styles from "./emergency-contact.module.css";
 
+const contacts = [
+  {
+    emoji: "🚑",
+    title: "Ambulance",
+    description: "For immediate medical assistance, call",
+    phone: "911 (India)",
+  },
+  {
+    emoji: "🏥",
+    title: "Hospital Helpline",
+    description: "Nearest hospital support:",
+    phone: "+91 9268880303",
+  },
+  {
+    emoji: "🆘",
+    title: "Mental Health Support",
+    description: "24/7 confidential support:",
+    phone: "+91 9999666555",
+  },
+  {
+    emoji: "👮",
+    title: "Police",
+    description: "For law enforcement, call",
+    phone: "100 (India)",
+  },
+  {
+    emoji: "🔥",
+    title: "Fire Department",
+    description: "For fire emergencies, call",
+    phone: "101 (India)",
+  },
+];
+
 export default function EmergencyContact() {
   return (
     <div className={styles.container}>
@@ -8,41 +41,17 @@ export default function EmergencyContact() {
         In case of an emergency, please reach out to the relevant services listed below:
       </p>
       <div className={styles.contactList}>
-        <div className={styles.contactItem}>
-          <span className={styles.emoji}>🚑</span>
-          <div>
-            <h2>Ambulance</h2>
-            <p>For immediate medical assistance, call <strong>911 (India)</strong>.</p>
+        {contacts.map((contact, index) => (
+          <div key={index} className={styles.contactItem}>
+            <span className={styles.emoji}>{contact.emoji}</span>
+            <div>
+              <h2>{contact.title}</h2>
+              <p>
+                {contact.description} <strong>{contact.phone}</strong>.
+              </p>
+            </div>
           </div>
-        </div>
-        <div className={styles.contactItem}>
-          <span className={styles.emoji}>🏥</span>
-          <div>
-            <h2>Hospital Helpline</h2>
-            <p>Nearest hospital support: <strong>+91 8005551234</strong>.</p>
-          </div>
-        </div>
-        <div className={styles.contactItem}>
-          <span className={styles.emoji}>🆘</span>
-          <div>
-            <h2>Mental Health Support</h2>
-            <p>24/7 confidential support: <strong>+91 8002738255</strong>.</p>
-          </div>
-        </div>
-        <div className={styles.contactItem}>
-          <span className={styles.emoji}>👮</span>
-          <div>
-            <h2>Police</h2>
-            <p>For law enforcement, call <strong>100 (India)</strong>.</p>
-          </div>
-        </div>
-        <div className={styles.contactItem}>
-          <span className={styles.emoji}>🔥</span>
-          <div>
-            <h2>Fire Department</h2>
-            <p>For fire emergencies, call <strong>101 (India)</strong>.</p>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

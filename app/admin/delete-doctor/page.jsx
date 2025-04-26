@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/navigation";
 import styles from "./delete-doctor.module.css";
 import { Search, Trash2 } from "lucide-react";
+import { toast } from "react-hot-toast";
 import Loader from "@/app/components/Loader/Loader";
 
 export default function DeleteDoctor() {
@@ -19,7 +20,7 @@ export default function DeleteDoctor() {
         if (loading) return;
     
         if (!user || user.role !== "admin") {
-            alert("You are not an admin. Redirecting...");
+            toast.error("You are not an admin. Redirecting...");
             router.replace("/");
             return;
         }

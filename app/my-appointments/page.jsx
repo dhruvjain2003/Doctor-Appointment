@@ -1,8 +1,9 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styles from "./my-appointments.module.css";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 import Link from "next/link";
 import Loader from "../components/Loader/Loader";
 
@@ -33,6 +34,7 @@ const MyAppointments = () => {
         }
       } catch (error) {
         console.error("Error fetching appointments:", error);
+        toast.error("Failed to load appointments.");
       } finally {
         setLoading(false);
       }
@@ -41,7 +43,7 @@ const MyAppointments = () => {
     fetchAppointments();
   }, [token, isLoggedIn]);
 
-  const getStatusColor = (status) => {
+  const getStatusColor = useCallback((status) => {
     switch (status.toLowerCase()) {
       case "pending":
         return { color: "#FFA500", background: "#FFF3E0" };
@@ -54,7 +56,7 @@ const MyAppointments = () => {
       default:
         return { color: "#000000", background: "#F5F5F5" };
     }
-  };
+  },[]);
 
   const formatDate = (dateString) => {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };

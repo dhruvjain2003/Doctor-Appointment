@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/navigation";
 import styles from "./approved-appointments.module.css";
 import Loader from "@/app/components/Loader/Loader";
+import { toast } from "react-hot-toast";
 
 export default function ApprovedAppointments() {
     const { user, token,loading } = useAuth();
@@ -14,6 +15,7 @@ export default function ApprovedAppointments() {
     useEffect(() => {
         if (loading) return;
         if (!user || user.role !== "admin") {
+            toast.error("You are not an admin. Redirecting...");
             router.replace("/");
             return;
         }

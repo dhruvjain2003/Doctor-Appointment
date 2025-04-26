@@ -1,8 +1,21 @@
+@keyframes shimmerBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
 .container {
-  max-width: 1200px;
+  /* max-width: 1200px; */
   margin: 0 auto;
-  padding: 20px;
+  padding: 20px 5vw;
   font-family: "Poppins", sans-serif;
+  /* background: linear-gradient(to bottom right, #f0fdfa, #e0f7fa); */
+  background: linear-gradient(-45deg, #f0fdfa, #e0f7fa, #f0fdfa);
+  background-size: 400% 400%;
+  animation: shimmerBackground 15s ease infinite;
 }
 
 .heading {
@@ -117,6 +130,14 @@
 }
 
 @media (max-width:480px) {
+  .blogList {
+    grid-template-columns: 1fr;
+  }
+
+  .container {
+    padding: 20px 3vw;
+  }
+
   .heading {
     display: block;
     margin: 0px auto;

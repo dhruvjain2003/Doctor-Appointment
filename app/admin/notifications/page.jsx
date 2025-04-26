@@ -17,7 +17,7 @@ export default function Notifications() {
     useEffect(() => {
         if (loading) return;
         if (!user || user.role !== "admin") {
-            toast.error("Unauthorized access. Redirecting...");
+            toast.error("You are not an admin. Redirecting...");
             setTimeout(() => {
                 router.replace("/");
             }, 1000);

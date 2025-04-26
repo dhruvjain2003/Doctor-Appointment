@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 import Link from "next/link";
 import {
   UserPlus,
@@ -22,7 +23,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (loading) return;
     if (!user || user.role !== "admin") {
-      alert("You are not an admin. Redirecting...");
+      toast.error("You are not an admin. Redirecting...");
       router.replace("/");
     }
 

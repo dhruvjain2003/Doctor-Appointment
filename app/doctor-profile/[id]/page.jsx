@@ -155,7 +155,7 @@ const DoctorProfile = () => {
         <div className="actionsRow">
             <button
             className={styles.bookButton}
-            onClick={() => (window.location.href = `/appointments/${doctor.id}`)}
+            onClick={() => (router.push(`/appointments/${doctor.id}`))}
             >
             Book Appointment
             </button>
