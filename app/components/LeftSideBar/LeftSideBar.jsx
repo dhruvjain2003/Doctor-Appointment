@@ -89,19 +89,18 @@ const LeftSideBar = ({ setDoctors }) => {
   };
 
   useEffect(() => {
-    if (window.innerWidth < 768) {
-      setShowFilters(false); 
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      setShowFilters(false);
     }
-  }, []); 
-  
+  }, []);  
 
-return (
-  <div className={styles.filterWrapper}>
-    <button className={styles.toggleButton} onClick={toggleFilters}>
-      {showFilters ? "Hide Filters ▴" : "Show Filters ▾"}
-    </button>
-    {showFilters && (
-      <div className={styles.filterContainer}>
+  return (
+    <div className={styles.filterWrapper}>
+      <button className={styles.toggleButton} onClick={toggleFilters}>
+        {showFilters ? "Hide Filters ▴" : "Show Filters ▾"}
+      </button>
+  
+      <div className={`${styles.filterContainer} ${!showFilters ? styles.hidden : ""}`}>
         <div className={styles.filterHeader}>
           <span className={styles.filterSpan}>Filter By:</span>
           <button className={styles.resetButton} onClick={resetFilters}>
@@ -131,9 +130,8 @@ return (
           "Female",
         ])}
       </div>
-    )}
-  </div>
-);
+    </div>
+  );  
 
 };
 
