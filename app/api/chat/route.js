@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import Groq from "groq-sdk";
 
 const groq = new Groq({
-  apiKey: GROQ_API_KEY,
+  apiKey: process.env.GROQ_API_KEY,
 });
 
 export async function POST(req) {
@@ -70,8 +70,6 @@ export async function POST(req) {
     const reply =
       response.choices?.[0]?.message?.content ||
       "No response from MedCare AI";
-
-    console.log("Raw Groq response:", reply);
 
     return NextResponse.json({
       response: reply,
